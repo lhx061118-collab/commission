@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品展示 | 泡沫默汐的麵包店</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=M+PLUS+Rounded+1c:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">🍞 Paomo Bakery</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">返回首頁</a></li>
+                <li><a href="index.html#menu">菜單</a></li>
+                <li><a href="index.html#commission-info">委託須知</a></li>
+                <li><a href="index.html#process">委託流程</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Decoration elements -->
+    <div class="decor" style="top: 15%; left: 5%;">✨</div>
+    <div class="decor" style="top: 25%; right: 10%;">🥐</div>
+    <div class="decor" style="top: 45%; left: 15%;">🍰</div>
+    <div class="decor" style="top: 75%; right: 5%;">🥨</div>
+
+    <section id="gallery" class="gallery-page">
+        <h2 class="section-title">🎨 作品展示 / Gallery</h2>
+        
+        <div style="text-align: center; margin-bottom: 30px;">
+            <a href="index.html" class="neu-button back-btn">
+                ← 返回首頁
+            </a>
+        </div>
+
+        <div class="gallery-nav" id="gallery-nav" style="flex-wrap: wrap;">
+            <!-- Buttons dynamically injected here -->
+        </div>
+        <div class="gallery-grid" id="gallery-grid">
+            <!-- Images dynamically injected here -->
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightboxModal" class="lightbox-overlay" onclick="closeLightbox()">
+        <img id="lightboxImg" class="lightbox-img" src="" onclick="event.stopPropagation(); closeLightbox()">
+    </div>
+
+    <footer>
+        <p>© 2026 Paomo Bakery 泡沫默汐的麵包店. All rights reserved.</p>
+        <p style="font-size: 0.8rem; margin-top: 5px;">Designed with 🤍 for Illustration Commissions.</p>
+    </footer>
+
+    <script>
+        const galleryItems = [
+            { "src": "麵包籃/sinlugu.png", "category": "麵包籃" },
+            { "src": "麵包籃/50+.png", "category": "麵包籃" },
+            { "src": "麵包籃/55+.png", "category": "麵包籃" },
+            { "src": "麵包籃/56+.png", "category": "麵包籃" },
+            { "src": "麵包籃/63+.png", "category": "麵包籃" },
+            { "src": "麵包籃/75+.jpg", "category": "麵包籃" },
+            { "src": "麵包籃/79+.jpg", "category": "麵包籃" },
+            { "src": "麵包籃/81+.jpg", "category": "麵包籃" },
+            { "src": "麵包籃/87+.jpg", "category": "麵包籃" },
+            { "src": "法國麵包/19.png", "category": "法國麵包" },
+            { "src": "法國麵包/20.png", "category": "法國麵包" },
+            { "src": "法國麵包/22.png", "category": "法國麵包" },
+            { "src": "法國麵包/24.png", "category": "法國麵包" },
+            { "src": "法國麵包/26.png", "category": "法國麵包" },
+            { "src": "法國麵包/28.png", "category": "法國麵包" },
+            { "src": "法國麵包/29.png", "category": "法國麵包" },
+            { "src": "法國麵包/30.png", "category": "法國麵包" },
+            { "src": "法國麵包/31.png", "category": "法國麵包" },
+            { "src": "法國麵包/52+.png", "category": "法國麵包" },
+            { "src": "法國麵包/54-4+.png", "category": "法國麵包" },
+            { "src": "法國麵包/54-5+.png", "category": "法國麵包" },
+            { "src": "法國麵包/57+.png", "category": "法國麵包" },
+            { "src": "法國麵包/60+.jpg", "category": "法國麵包" },
+            { "src": "法國麵包/71+.png", "category": "法國麵包" },
+            { "src": "法國麵包/73+.jpg", "category": "法國麵包" },
+            { "src": "法國麵包/76+.jpg", "category": "法國麵包" },
+            { "src": "法國麵包/77+.jpg", "category": "法國麵包" },
+            { "src": "法國麵包/78+.jpg", "category": "法國麵包" },
+            { "src": "法國麵包/80+.jpg", "category": "法國麵包" },
+            { "src": "法國麵包/molesai.png", "category": "法國麵包" },
+            { "src": "精緻頭像/567.png", "category": "精緻頭像" },
+            { "src": "精緻頭像/tim.png", "category": "精緻頭像" },
+            { "src": "精緻頭像/49+.png", "category": "精緻頭像" },
+            { "src": "胸像橫插/balu.png", "category": "胸像橫插" },
+            { "src": "胸像橫插/48+.png", "category": "胸像橫插" },
+            { "src": "胸像橫插/51+.png", "category": "胸像橫插" },
+            { "src": "胸像橫插/58+.jpg", "category": "胸像橫插" },
+            { "src": "胸像橫插/64+.png", "category": "胸像橫插" },
+            { "src": "胸像橫插/74+.jpg", "category": "胸像橫插" },
+            { "src": "胸像橫插/84+.jpg", "category": "胸像橫插" },
+            { "src": "胸像橫插/86+.jpg", "category": "胸像橫插" },
+            { "src": "胸像橫插/88+.jpg", "category": "胸像橫插" },
+            { "src": "胸像橫插/90+.jpg", "category": "胸像橫插" },
+            { "src": "蝴蝶餅/tosi.png", "category": "蝴蝶餅" },
+            { "src": "蝴蝶餅/1+.png", "category": "蝴蝶餅" },
+            { "src": "蝴蝶餅/2+.png", "category": "蝴蝶餅" },
+            { "src": "蝴蝶餅/3+.png", "category": "蝴蝶餅" },
+            { "src": "蝴蝶餅/4+.png", "category": "蝴蝶餅" },
+            { "src": "蝴蝶餅/5+.png", "category": "蝴蝶餅" },
+            { "src": "蝴蝶餅/6+.png", "category": "蝴蝶餅" },
+            { "src": "蝴蝶餅/7+.png", "category": "蝴蝶餅" },
+            { "src": "蝴蝶餅/8+.jpg", "category": "蝴蝶餅" },
+            { "src": "蝴蝶餅/9+.jpg", "category": "蝴蝶餅" },
+            { "src": "鬆餅/me.png", "category": "鬆餅" },
+            { "src": "鬆餅/swim.png", "category": "鬆餅" },
+            { "src": "鬆餅/flower.png", "category": "鬆餅" },
+            { "src": "鬆餅/11.png", "category": "鬆餅" },
+            { "src": "鬆餅/83+.jpg", "category": "鬆餅" },
+            { "src": "場景插畫/dasu.png", "category": "場景插畫" },
+            { "src": "場景插畫/silsu.png", "category": "場景插畫" },
+            { "src": "場景插畫/37+.png", "category": "場景插畫" },
+            { "src": "場景插畫/39+.png", "category": "場景插畫" },
+            { "src": "場景插畫/40+.png", "category": "場景插畫" },
+            { "src": "場景插畫/41+.png", "category": "場景插畫" },
+            { "src": "場景插畫/43+.png", "category": "場景插畫" },
+            { "src": "場景插畫/47+.jpg", "category": "場景插畫" },
+            { "src": "場景插畫/62+.png", "category": "場景插畫" },
+            { "src": "場景插畫/65+.png", "category": "場景插畫" },
+            { "src": "場景插畫/69+.jpg", "category": "場景插畫" },
+            { "src": "場景插畫/82+.jpg", "category": "場景插畫" },
+            { "src": "場景插畫/89+.jpg", "category": "場景插畫" },
+            { "src": "場景插畫/su.png", "category": "場景插畫" }
+        ];
+
+        function renderGallery() {
+            const nav = document.getElementById('gallery-nav');
+            const categories = ['All 🌟', ...new Set(galleryItems.map(item => item.category))];
+
+            nav.innerHTML = categories.map(cat =>
+                `<button class="neu-button" onclick="filterGallery('${cat}')" style="margin: 5px;">${cat}</button>`
+            ).join('');
+
+            filterGallery('All 🌟');
+        }
+
+        function filterGallery(category) {
+            const grid = document.getElementById('gallery-grid');
+            const filtered = category === 'All 🌟'
+                ? galleryItems
+                : galleryItems.filter(item => item.category === category);
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="gallery-item" data-category="${item.category}" style="padding: 0; overflow: hidden; background: var(--cookie-color); border-radius: 12px; box-shadow: inset 5px 5px 10px var(--dark-shadow), inset -5px -5px 10px var(--light-shadow); break-inside: avoid; margin-bottom: 25px; cursor: pointer;">
+                    <img src="./${item.src}" loading="lazy" alt="${item.category}" 
+                         onerror="console.warn('圖片載入失敗:', '${item.src}'); this.onerror=null; this.src='https://placehold.co/400x400?text=Not+Found';"
+                         onclick="openLightbox('./${item.src}')" style="width: 100%; height: auto; display: block; border-radius: 12px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+                </div>
+            `).join('');
+        }
+
+        // Lightbox functionality
+        function openLightbox(src) {
+            const overlay = document.getElementById('lightboxModal');
+            const img = document.getElementById('lightboxImg');
+            img.src = src;
+            overlay.classList.add('active');
+
+            // Handle loading error in lightbox as well
+            img.onerror = () => {
+                console.warn('圖片載入失敗 (大圖):', src);
+                img.src = 'https://placehold.co/400x400?text=Not+Found';
+            };
+        }
+
+        function closeLightbox() {
+            const overlay = document.getElementById('lightboxModal');
+            overlay.classList.remove('active');
+            setTimeout(() => {
+                document.getElementById('lightboxImg').src = '';
+            }, 300); // Clear src after transition
+        }
+
+        // Handle Escape key to close lightbox
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Add fun random floating to decor emojis
+        document.querySelectorAll('.decor').forEach(el => {
+            el.animate([
+                { transform: 'translateY(0) rotate(0deg)' },
+                { transform: `translateY(${-20 + Math.random() * -10}px) rotate(${Math.random() * 20 - 10}deg)` },
+                { transform: 'translateY(0) rotate(0deg)' }
+            ], {
+                duration: 3000 + Math.random() * 2000,
+                iterations: Infinity,
+                easing: 'ease-in-out'
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', renderGallery);
+    </script>
+</body>
+
+</html>

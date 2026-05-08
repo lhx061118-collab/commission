@@ -8,621 +8,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=M+PLUS+Rounded+1c:wght@400;700&display=swap"
         rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #FDFCF0;
-            --text-color: #6C5A54;
-            --light-shadow: #ffffff;
-            --dark-shadow: #E5E4D8;
-            --accent-pink: #FADCD9;
-            --accent-brown: #C9A690;
-            --cookie-color: #F4EBD0;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Nunito', 'M PLUS Rounded 1c', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            overflow-x: hidden;
-            background-image: radial-gradient(var(--accent-pink) 1px, transparent 1px);
-            background-size: 40px 40px;
-            background-blend-mode: multiply;
-        }
-
-        /* Neumorphism Utilities */
-        .neu-card {
-            background-color: var(--bg-color);
-            border-radius: 24px;
-            box-shadow: 10px 10px 20px var(--dark-shadow),
-                -10px -10px 20px var(--light-shadow);
-            padding: 30px;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .neu-button {
-            background-color: var(--cookie-color);
-            border-radius: 50px;
-            box-shadow: 6px 6px 12px var(--dark-shadow),
-                -6px -6px 12px var(--light-shadow);
-            padding: 12px 28px;
-            border: none;
-            color: var(--text-color);
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: inline-block;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .neu-button:hover {
-            transform: scale(1.05) rotate(-2deg);
-            box-shadow: 8px 8px 16px var(--dark-shadow),
-                -8px -8px 16px var(--light-shadow);
-            color: #8c6853;
-        }
-
-        .neu-button:active {
-            transform: scale(0.95);
-            box-shadow: inset 4px 4px 8px var(--dark-shadow),
-                inset -4px -4px 8px var(--light-shadow);
-        }
-
-        /* Navbar */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 15px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            background: rgba(253, 252, 240, 0.8);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(229, 228, 216, 0.4);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--accent-brown);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-
-        nav a:hover {
-            background-color: var(--accent-pink);
-            color: #fff;
-        }
-
-        /* Sections */
-        section {
-            min-height: 100vh;
-            padding: 100px 10vw 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 50px;
-            color: var(--accent-brown);
-            position: relative;
-            display: inline-block;
-            align-self: center;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60%;
-            height: 4px;
-            background-color: var(--accent-pink);
-            border-radius: 4px;
-        }
-
-        /* Home Section */
-        #home {
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            gap: 40px;
-        }
-
-        .hero-text {
-            flex: 1;
-        }
-
-        .hero-text h1 {
-            font-size: 3.5rem;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            color: var(--accent-brown);
-        }
-
-        .hero-text p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            color: var(--text-color);
-        }
-
-        .hero-image {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            position: relative;
-        }
-
-        .hero-img {
-            width: 350px;
-            height: 350px;
-            border-radius: 50%;
-            object-fit: cover;
-            box-shadow: 15px 15px 30px var(--dark-shadow),
-                -15px -15px 30px var(--light-shadow);
-            animation: float 4s ease-in-out infinite;
-            border: 8px solid white;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0px) rotate(0deg);
-            }
-
-            50% {
-                transform: translateY(-15px) rotate(2deg);
-            }
-
-            100% {
-                transform: translateY(0px) rotate(0deg);
-            }
-        }
-
-        /* Menu Section */
-        #menu .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 40px;
-        }
-
-        .menu-card {
-            text-align: center;
-            position: relative;
-            overflow: visible;
-            cursor: pointer;
-        }
-
-        .menu-icon {
-            font-size: 4rem;
-            margin-bottom: 15px;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: inline-block;
-        }
-
-        .menu-card:hover .menu-icon {
-            transform: scale(1.2) rotate(10deg);
-        }
-
-        .menu-card h3 {
-            font-size: 1.5rem;
-            color: var(--accent-brown);
-            margin-bottom: 10px;
-        }
-
-        .menu-card .price {
-            display: inline-block;
-            background: var(--accent-pink);
-            color: #5D4A44;
-            padding: 5px 15px;
-            border-radius: 15px;
-            font-weight: 700;
-            margin-top: 15px;
-            box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.7),
-                inset -2px -2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Gallery Section */
-        .gallery-nav {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
-            width: 100%;
-        }
-
-        #gallery img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-            border-radius: 12px;
-            transition: transform 0.3s ease;
-        }
-
-        #gallery img:hover {
-            transform: scale(1.05);
-        }
-
-        @media (max-width: 900px) {
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Process Section */
-        .process-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .step {
-            flex: 1;
-            min-width: 150px;
-            text-align: center;
-            position: relative;
-        }
-
-        .step-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 15px;
-            background: var(--bg-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            box-shadow: 6px 6px 12px var(--dark-shadow),
-                -6px -6px 12px var(--light-shadow);
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 2;
-        }
-
-        .step:hover .step-icon {
-            transform: scale(1.1);
-            background: var(--accent-pink);
-            color: white;
-        }
-
-        .step-arrow {
-            position: absolute;
-            top: 40px;
-            right: -25%;
-            width: 50%;
-            height: 4px;
-            background: repeating-linear-gradient(90deg, var(--accent-brown) 0, var(--accent-brown) 10px, transparent 10px, transparent 20px);
-            z-index: 1;
-            opacity: 0.5;
-        }
-
-        /* Contact Section */
-        #contact {
-            text-align: center;
-            min-height: 70vh;
-        }
-
-        .contact-box {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .contact-links {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .contact-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            font-size: 1.2rem;
-            padding: 20px;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: var(--bg-color);
-            color: var(--accent-brown);
-            border-top: 2px dashed rgba(201, 166, 144, 0.3);
-        }
-
-        /* Floating elements for decor */
-        .decor {
-            position: absolute;
-            font-size: 2rem;
-            opacity: 0.5;
-            z-index: -1;
-            filter: blur(1px);
-        }
-
-        /* Modals and Cart */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(108, 90, 84, 0.5);
-            backdrop-filter: blur(5px);
-            z-index: 2000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--bg-color);
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--accent-brown);
-        }
-
-        .modal-content h3 {
-            color: var(--accent-brown);
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-            text-align: center;
-        }
-
-        /* Lightbox */
-        .lightbox-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 3000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-
-        .lightbox-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .lightbox-img {
-            max-width: 90vw;
-            max-height: 90vh;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            transform: scale(0.9);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: zoom-out;
-        }
-
-        .lightbox-overlay.active .lightbox-img {
-            transform: scale(1);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: var(--text-color);
-        }
-
-        .form-group input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
-            border: 2px solid var(--accent-pink);
-            background: var(--bg-color);
-            color: var(--text-color);
-            font-family: inherit;
-        }
-
-        .form-group input[type="number"]:focus {
-            outline: none;
-            border-color: var(--accent-brown);
-        }
-
-        .addon-list {
-            display: none;
-            margin-top: 15px;
-            background: var(--cookie-color);
-            padding: 15px;
-            border-radius: 15px;
-        }
-
-        .addon-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .cart-float {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 70px;
-            height: 70px;
-            background: var(--accent-brown);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            color: white;
-            box-shadow: 0 10px 20px rgba(201, 166, 144, 0.4);
-            cursor: pointer;
-            z-index: 1001;
-            transition: transform 0.3s;
-        }
-
-        .cart-float:hover {
-            transform: scale(1.1);
-        }
-
-        .cart-badge {
-            position: absolute;
-            top: 0;
-            right: -5px;
-            background: var(--accent-pink);
-            color: var(--text-color);
-            font-size: 1rem;
-            font-weight: bold;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid white;
-        }
-
-        .total-price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--accent-brown);
-            text-align: right;
-            margin: 20px 0;
-        }
-
-        .cart-item {
-            border-bottom: 1px dashed var(--accent-brown);
-            padding: 10px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-item-info {
-            flex: 1;
-        }
-
-        .cart-item-title {
-            font-weight: bold;
-            color: var(--accent-brown);
-        }
-
-        .cart-item-subs {
-            font-size: 0.9rem;
-            color: var(--text-color);
-            opacity: 0.8;
-        }
-
-        .cart-item-remove {
-            color: #d9534f;
-            cursor: pointer;
-            font-weight: bold;
-            margin-left: 10px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            #home {
-                flex-direction: column;
-                text-align: center;
-                padding-top: 120px;
-            }
-
-            .hero-img {
-                width: 220px;
-                height: 220px;
-            }
-
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
-
-            #menu .grid {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .step-arrow {
-                display: none;
-            }
-
-            header {
-                padding: 15px;
-            }
-
-            nav ul {
-                gap: 10px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -633,7 +19,8 @@
             <ul>
                 <li><a href="#home">首頁</a></li>
                 <li><a href="#menu">菜單</a></li>
-                <li><a href="#gallery">作品展示</a></li>
+                <li><a href="gallery.html">作品展示</a></li>
+                <li><a href="#commission-info">委託須知</a></li>
                 <li><a href="#process">委託流程</a></li>
             </ul>
         </nav>
@@ -654,6 +41,30 @@
         <div class="hero-image">
             <img src="mo2.png" class="hero-img" alt="Mascot"
                 onerror="this.onerror=null; this.src='https://placehold.co/400x400?text=No+Image';">
+        </div>
+    </section>
+
+    <section class="commission-status">
+        <div class="status-card open" id="statusCard">
+
+            <h2>🍞 委託狀態</h2>
+
+            <p id="statusText">
+                目前開放委託中
+            </p>
+
+            <span class="queue-text">
+                目前排單：至2026/6/10
+            </span>
+
+            <p style="font-size: 0.8rem; opacity: 0.6; margin-top: -10px; margin-bottom: 20px;">
+                最後更新：2026 / 05 / 08
+            </p>
+
+            <a href="https://www.facebook.com/share/1E2dvRGXvg/" target="_blank" class="status-btn" id="statusBtn">
+                立即委託
+            </a>
+
         </div>
     </section>
 
@@ -718,15 +129,6 @@
         </div>
     </section>
 
-    <section id="gallery">
-        <h2 class="section-title">作品展示 / Gallery</h2>
-        <div class="gallery-nav" id="gallery-nav" style="flex-wrap: wrap;">
-            <!-- Buttons dynamically injected here -->
-        </div>
-        <div class="gallery-grid" id="gallery-grid">
-            <!-- Images dynamically injected here -->
-        </div>
-    </section>
 
     <section id="process">
         <h2 class="section-title">委託流程 / Process</h2>
@@ -830,10 +232,117 @@
         <div class="cart-badge" id="cartBadge" style="display:none;">0</div>
     </div>
 
-    <!-- Lightbox Modal -->
-    <div id="lightboxModal" class="lightbox-overlay" onclick="closeLightbox()">
-        <img id="lightboxImg" class="lightbox-img" src="" onclick="event.stopPropagation(); closeLightbox()">
-    </div>
+
+    <section class="commission-info" id="commission-info">
+        <h2 class="section-title">🧁 委託須知 / Info</h2>
+        <div class="info-grid">
+            <div class="info-card">
+                <h3>🎨 畫風說明</h3>
+                <p>
+                    ✔ 畫風偏日系偽厚塗<br>
+                    ✔ 擅長可愛風格<br>
+                    ✔ 角色表情與氛圍感為主
+                </p>
+                <h4>可以接受的內容：</h4>
+                <p>
+                    ✔ 原創角色<br>
+                    ✔ 夢向<br>
+                    ✔ 二創<br>
+                    ✔ 情侶
+                </p>
+                <h4>目前不接：</h4>
+                <p>
+                    ✘ 老人角色<br>
+                    ✘ 福瑞（偏動物類型）<br>
+                    ✘ 重機械 / 過度寫實
+                </p>
+            </div>
+
+            <div class="info-card">
+                <h3>💰 付款方式</h3>
+                <p>
+                    ✔ 匯款 / 微信付款<br>
+                    ✔ 完稿後以 EMAIL 交付無水印版本
+                </p>
+                <p>
+                    所有價格均為底價，<br>
+                    會依複雜度加價。
+                </p>
+                <h3>📌 修改規則</h3>
+                <p>
+                    ✔ 草稿階段可小幅修改<br>
+                    ✔ 完稿後僅能微調
+                </p>
+                <p>
+                    若中途大幅修改設定，<br>
+                    可能需額外加價。
+                </p>
+            </div>
+
+            <div class="info-card">
+                <h3>🛒 商用授權說明</h3>
+                <p>
+                    未經商用授權，<br>
+                    禁止用於任何營利用途。
+                </p>
+                <p>
+                    ✔ 授權僅限委託人本人使用<br>
+                    ✘ 禁止轉售<br>
+                    ✘ 禁止 NFT 用途<br>
+                    ✘ 禁止 AI 訓練<br>
+                    ✘ 禁止二次販售
+                </p>
+                <p>
+                    非商用委託：<br>
+                    不可用於販售、<br>
+                    印製周邊或盈利用途。
+                </p>
+                <p>
+                    若需商用，<br>
+                    請提前告知用途，<br>
+                    商用價格會另外計算。
+                </p>
+            </div>
+
+            <div class="info-card">
+                <h3>⚠ 注意事項</h3>
+                <p>
+                    ✔ 繪師保有作品公開權<br>
+                    （會作為作品集展示）
+                </p>
+                <p>
+                    ✔ 工期依排單狀況而定<br>
+                    ✔ 請勿催稿
+                </p>
+                <p>
+                    ✔ 若超過一定時間未回覆，<br>
+                    可能順延排單。
+                </p>
+                <p>
+                    ❌ 取消委託<br>
+                    草稿確認後取消，<br>
+                    訂金將不予退還。
+                </p>
+            </div>
+
+            <div class="info-card">
+                <h3>⏳ 工期＆排單</h3>
+                <p>
+                    一般工期約 1～4 週，<br>
+                    依排單與複雜度而定。
+                </p>
+                <p>
+                    若需急件，<br>
+                    可能酌收急件費用。
+                </p>
+                <h3> 📁 交付格式</h3>
+                <p>
+                    PNG / JPG<br>
+                    依需求提供尺寸。
+                </p>
+            </div>
+        </div>
+    </section>
 
     <section id="contact">
         <h2 class="section-title">聯絡店長 / Contact</h2>
@@ -1074,137 +583,23 @@
         });
     </script>
     <script>
-        const galleryItems = [
-            { "src": "麵包籃/sinlugu.png", "category": "麵包籃" },
-            { "src": "麵包籃/50+.png", "category": "麵包籃" },
-            { "src": "麵包籃/55+.png", "category": "麵包籃" },
-            { "src": "麵包籃/56+.png", "category": "麵包籃" },
-            { "src": "麵包籃/63+.png", "category": "麵包籃" },
-            { "src": "麵包籃/75+.jpg", "category": "麵包籃" },
-            { "src": "麵包籃/79+.jpg", "category": "麵包籃" },
-            { "src": "麵包籃/81+.jpg", "category": "麵包籃" },
-            { "src": "麵包籃/87+.jpg", "category": "麵包籃" },
-            { "src": "法國麵包/19.png", "category": "法國麵包" },
-            { "src": "法國麵包/20.png", "category": "法國麵包" },
-            { "src": "法國麵包/22.png", "category": "法國麵包" },
-            { "src": "法國麵包/24.png", "category": "法國麵包" },
-            { "src": "法國麵包/26.png", "category": "法國麵包" },
-            { "src": "法國麵包/28.png", "category": "法國麵包" },
-            { "src": "法國麵包/29.png", "category": "法國麵包" },
-            { "src": "法國麵包/30.png", "category": "法國麵包" },
-            { "src": "法國麵包/31.png", "category": "法國麵包" },
-            { "src": "法國麵包/52+.png", "category": "法國麵包" },
-            { "src": "法國麵包/54-4+.png", "category": "法國麵包" },
-            { "src": "法國麵包/54-5+.png", "category": "法國麵包" },
-            { "src": "法國麵包/57+.png", "category": "法國麵包" },
-            { "src": "法國麵包/60+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/71+.png", "category": "法國麵包" },
-            { "src": "法國麵包/73+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/76+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/77+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/78+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/80+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/molesai.png", "category": "法國麵包" },
-            { "src": "精緻頭像/567.png", "category": "精緻頭像" },
-            { "src": "精緻頭像/tim.png", "category": "精緻頭像" },
-            { "src": "精緻頭像/49+.png", "category": "精緻頭像" },
-            { "src": "胸像橫插/balu.png", "category": "胸像橫插" },
-            { "src": "胸像橫插/48+.png", "category": "胸像橫插" },
-            { "src": "胸像橫插/51+.png", "category": "胸像橫插" },
-            { "src": "胸像橫插/58+.jpg", "category": "胸像橫插" },
-            { "src": "胸像橫插/64+.png", "category": "胸像橫插" },
-            { "src": "胸像橫插/74+.jpg", "category": "胸像橫插" },
-            { "src": "胸像橫插/84+.jpg", "category": "胸像橫插" },
-            { "src": "胸像橫插/86+.jpg", "category": "胸像橫插" },
-            { "src": "胸像橫插/88+.jpg", "category": "胸像橫插" },
-            { "src": "胸像橫插/90+.jpg", "category": "胸像橫插" },
-            { "src": "蝴蝶餅/tosi.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/1+.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/2+.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/3+.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/4+.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/5+.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/6+.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/7+.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/8+.jpg", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/9+.jpg", "category": "蝴蝶餅" },
-            { "src": "鬆餅/me.png", "category": "鬆餅" },
-            { "src": "鬆餅/swim.png", "category": "鬆餅" },
-            { "src": "鬆餅/flower.png", "category": "鬆餅" },
-            { "src": "鬆餅/11.png", "category": "鬆餅" },
-            { "src": "鬆餅/83+.jpg", "category": "鬆餅" },
-            { "src": "場景插畫/dasu.png", "category": "場景插畫" },
-            { "src": "場景插畫/silsu.png", "category": "場景插畫" },
-            { "src": "場景插畫/37+.png", "category": "場景插畫" },
-            { "src": "場景插畫/39+.png", "category": "場景插畫" },
-            { "src": "場景插畫/40+.png", "category": "場景插畫" },
-            { "src": "場景插畫/41+.png", "category": "場景插畫" },
-            { "src": "場景插畫/43+.png", "category": "場景插畫" },
-            { "src": "場景插畫/47+.jpg", "category": "場景插畫" },
-            { "src": "場景插畫/62+.png", "category": "場景插畫" },
-            { "src": "場景插畫/65+.png", "category": "場景插畫" },
-            { "src": "場景插畫/69+.jpg", "category": "場景插畫" },
-            { "src": "場景插畫/82+.jpg", "category": "場景插畫" },
-            { "src": "場景插畫/89+.jpg", "category": "場景插畫" },
-            { "src": "場景插畫/su.png", "category": "場景插畫" }
-        ];
+        document.addEventListener("DOMContentLoaded", () => {
+            const commissionOpen = false;
+            const statusCard = document.getElementById("statusCard");
+            const statusText = document.getElementById("statusText");
+            const statusBtn = document.getElementById("statusBtn");
 
-        function renderGallery() {
-            const nav = document.getElementById('gallery-nav');
-            const categories = ['All 🌟', ...new Set(galleryItems.map(item => item.category))];
-
-            nav.innerHTML = categories.map(cat =>
-                `<button class="neu-button" onclick="filterGallery('${cat}')" style="margin: 5px;">${cat}</button>`
-            ).join('');
-
-            filterGallery('All 🌟');
-        }
-
-        function filterGallery(category) {
-            const grid = document.getElementById('gallery-grid');
-            const filtered = category === 'All 🌟'
-                ? galleryItems
-                : galleryItems.filter(item => item.category === category);
-
-            grid.innerHTML = filtered.map(item => `
-                <div class="gallery-item" data-category="${item.category}" style="padding: 0; overflow: hidden; background: var(--cookie-color); border-radius: 12px; box-shadow: inset 5px 5px 10px var(--dark-shadow), inset -5px -5px 10px var(--light-shadow); break-inside: avoid; margin-bottom: 25px; cursor: pointer;">
-                    <img src="./${item.src}" loading="lazy" alt="${item.category}" 
-                         onerror="console.warn('圖片載入失敗:', '${item.src}'); this.onerror=null; this.src='https://placehold.co/400x400?text=Not+Found';"
-                         onclick="openLightbox('./${item.src}')" />
-                </div>
-            `).join('');
-        }
-
-        // Lightbox functionality
-        function openLightbox(src) {
-            const overlay = document.getElementById('lightboxModal');
-            const img = document.getElementById('lightboxImg');
-            img.src = src;
-            overlay.classList.add('active');
-
-            // Handle loading error in lightbox as well
-            img.onerror = () => {
-                console.warn('圖片載入失敗 (大圖):', src);
-                img.src = 'https://placehold.co/400x400?text=Not+Found';
-            };
-        }
-
-        function closeLightbox() {
-            const overlay = document.getElementById('lightboxModal');
-            overlay.classList.remove('active');
-            setTimeout(() => {
-                document.getElementById('lightboxImg').src = '';
-            }, 300); // Clear src after transition
-        }
-
-        // Handle Escape key to close lightbox
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeLightbox();
+            if (commissionOpen) {
+                statusCard.classList.add("open");
+                statusText.textContent = "目前開放委託中";
+                statusBtn.textContent = "立即委託";
+            } else {
+                statusCard.classList.remove("open");
+                statusCard.classList.add("closed");
+                statusText.textContent = "目前暫停接單";
+                statusBtn.textContent = "查看作品";
             }
         });
-
-        document.addEventListener('DOMContentLoaded', renderGallery);
     </script>
 </body>
 
