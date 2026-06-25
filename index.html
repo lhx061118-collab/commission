@@ -221,6 +221,7 @@
             <div style="text-align: center; margin-top: 20px;">
                 <button class="neu-button" onclick="checkout()">確認點餐 📋</button>
                 <p style="font-size: 0.8rem; margin-top: 10px;">點擊會複製您的訂單明細，方便直接傳給店長！</p>
+                <p style="font-size: 0.8rem; color: #D98B8B; margin-top: 5px; font-weight: bold;">此網頁無法直接訂餐，請至店長FB帳號私信預定!</p>
                 <textarea id="checkoutCopy" style="opacity:0; position:absolute; z-index:-1;"></textarea>
             </div>
         </div>
@@ -537,10 +538,12 @@
 
             try {
                 document.execCommand('copy');
-                alert("已成功複製訂單明細！\n\n您可以直接前往 IG (paomo_1118) 或 Email 貼上傳送囉！");
+                alert("已成功複製訂單明細！\n\n點擊確認後將自動跳轉至店長FB以私信預定！");
             } catch (err) {
                 alert("複製失敗，請手動複製！\n\n" + orderText);
             }
+
+            window.open("https://www.facebook.com/share/1E2dvRGXvg/", "_blank");
         }
 
         // Simple script to adjust arrow visibility based on screen resize
@@ -584,7 +587,7 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const commissionOpen = ture;
+            const commissionOpen = true;
             const statusCard = document.getElementById("statusCard");
             const statusText = document.getElementById("statusText");
             const statusBtn = document.getElementById("statusBtn");
@@ -598,6 +601,19 @@
                 statusCard.classList.add("closed");
                 statusText.textContent = "目前暫停接單";
                 statusBtn.textContent = "查看作品";
+            }
+
+            // Auto open product modal if 'order' parameter is in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderProduct = urlParams.get('order');
+            if (orderProduct && products[orderProduct]) {
+                const menuSec = document.getElementById('menu');
+                if (menuSec) {
+                    menuSec.scrollIntoView({ behavior: 'smooth' });
+                }
+                setTimeout(() => {
+                    openModal(orderProduct);
+                }, 600);
             }
         });
     </script>

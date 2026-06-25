@@ -9,6 +9,66 @@
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=M+PLUS+Rounded+1c:wght@400;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Highlight selected category button */
+        #gallery-nav .neu-button.selected {
+            background-color: var(--accent-brown);
+            color: #ffffff;
+            box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.15),
+                        inset -4px -4px 8px rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Video gallery items match img styling */
+        #gallery-grid video {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+        
+        #gallery-grid video:hover {
+            transform: scale(1.05);
+        }
+
+        .lightbox-video {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: zoom-out;
+        }
+
+        .lightbox-overlay.active .lightbox-video {
+            transform: scale(1) !important;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-nav {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                justify-content: flex-start !important;
+                padding: 10px 5px !important;
+                gap: 8px !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            .gallery-nav::-webkit-scrollbar {
+                display: none;
+            }
+            .gallery-nav .neu-button {
+                flex: 0 0 auto !important;
+                padding: 8px 16px !important;
+                font-size: 0.9rem !important;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 12px !important;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -43,6 +103,14 @@
         <div class="gallery-nav" id="gallery-nav" style="flex-wrap: wrap;">
             <!-- Buttons dynamically injected here -->
         </div>
+        <div id="gallery-placeholder" style="text-align: center; font-size: 1.5rem; font-weight: 700; color: var(--accent-brown); margin: 40px 0 20px;">
+            請選擇項目開啟例圖
+        </div>
+        <div id="order-shortcut-container" style="text-align: center; margin-bottom: 25px; display: none;">
+            <a id="order-shortcut-btn" href="#" class="neu-button" style="background-color: var(--accent-pink); font-size: 1rem; padding: 10px 24px;">
+                👉 立即前往下訂此系列 🛒
+            </a>
+        </div>
         <div class="gallery-grid" id="gallery-grid">
             <!-- Images dynamically injected here -->
         </div>
@@ -50,7 +118,8 @@
 
     <!-- Lightbox Modal -->
     <div id="lightboxModal" class="lightbox-overlay" onclick="closeLightbox()">
-        <img id="lightboxImg" class="lightbox-img" src="" onclick="event.stopPropagation(); closeLightbox()">
+        <img id="lightboxImg" class="lightbox-img" src="" onclick="event.stopPropagation(); closeLightbox()" style="display: none;">
+        <video id="lightboxVideo" class="lightbox-video" src="" muted loop playsinline onclick="event.stopPropagation(); closeLightbox()" style="display: none;"></video>
     </div>
 
     <footer>
@@ -69,6 +138,7 @@
             { "src": "麵包籃/79+.jpg", "category": "麵包籃" },
             { "src": "麵包籃/81+.jpg", "category": "麵包籃" },
             { "src": "麵包籃/87+.jpg", "category": "麵包籃" },
+            { "src": "麵包籃/94+.jpg", "category": "麵包籃" },
             { "src": "法國麵包/19.png", "category": "法國麵包" },
             { "src": "法國麵包/20.png", "category": "法國麵包" },
             { "src": "法國麵包/22.png", "category": "法國麵包" },
@@ -92,8 +162,9 @@
             { "src": "法國麵包/molesai.png", "category": "法國麵包" },
             { "src": "精緻頭像/567.png", "category": "精緻頭像" },
             { "src": "精緻頭像/tim.png", "category": "精緻頭像" },
-            { "src": "精緻頭像/49+.png", "category": "精緻頭像" },
             { "src": "精緻頭像/91+.jpg", "category": "精緻頭像" },
+            { "src": "精緻頭像/96+.jpg", "category": "精緻頭像" },
+            { "src": "精緻頭像/49+.png", "category": "精緻頭像" },
             { "src": "胸像橫插/balu.png", "category": "胸像橫插" },
             { "src": "胸像橫插/48+.png", "category": "胸像橫插" },
             { "src": "胸像橫插/51+.png", "category": "胸像橫插" },
@@ -104,6 +175,7 @@
             { "src": "胸像橫插/86+.jpg", "category": "胸像橫插" },
             { "src": "胸像橫插/88+.jpg", "category": "胸像橫插" },
             { "src": "胸像橫插/90+.jpg", "category": "胸像橫插" },
+            { "src": "胸像橫插/95+.jpg", "category": "胸像橫插" },
             { "src": "蝴蝶餅/tosi.png", "category": "蝴蝶餅" },
             { "src": "蝴蝶餅/1+.png", "category": "蝴蝶餅" },
             { "src": "蝴蝶餅/2+.png", "category": "蝴蝶餅" },
@@ -119,6 +191,8 @@
             { "src": "鬆餅/flower.png", "category": "鬆餅" },
             { "src": "鬆餅/11.png", "category": "鬆餅" },
             { "src": "鬆餅/83+.jpg", "category": "鬆餅" },
+            { "src": "鬆餅/67+.jpg", "category": "鬆餅" },
+            { "src": "鬆餅/68+.jpg", "category": "鬆餅" },
             { "src": "場景插畫/dasu.png", "category": "場景插畫" },
             { "src": "場景插畫/silsu.png", "category": "場景插畫" },
             { "src": "場景插畫/37+.png", "category": "場景插畫" },
@@ -134,40 +208,135 @@
             { "src": "場景插畫/89+.jpg", "category": "場景插畫" },
             { "src": "場景插畫/92+.jpg", "category": "場景插畫" },
             { "src": "場景插畫/93+.jpg", "category": "場景插畫" },
-            { "src": "場景插畫/su.png", "category": "場景插畫" }
+            { "src": "場景插畫/su.png", "category": "場景插畫" },
+            { "src": "軟糖小人/1.mp4", "category": "軟糖小人" },
+            { "src": "軟糖小人/2.mp4", "category": "軟糖小人" },
+            { "src": "軟糖小人/3.mp4", "category": "軟糖小人" },
+            { "src": "軟糖小人/4.mp4", "category": "軟糖小人" },
+            { "src": "軟糖小人/5.mp4", "category": "軟糖小人" },
+            { "src": "軟糖小人/6.mp4", "category": "軟糖小人" },
+            { "src": "軟糖小人/7.mp4", "category": "軟糖小人" }
         ];
+
+        const categoryToProduct = {
+            '蝴蝶餅': 'pretzel',
+            '法國麵包': 'baguette',
+            '鬆餅': 'pancake',
+            '麵包籃': 'basket',
+            '精緻頭像': 'toast',
+            '胸像橫插': 'donut',
+            '場景插畫': 'cake',
+            '軟糖小人': 'gummy'
+        };
 
         function renderGallery() {
             const nav = document.getElementById('gallery-nav');
-            const categories = ['All 🌟', ...new Set(galleryItems.map(item => item.category))];
+            const categories = [...new Set(galleryItems.map(item => item.category))];
 
             nav.innerHTML = categories.map(cat =>
-                `<button class="neu-button" onclick="filterGallery('${cat}')" style="margin: 5px;">${cat}</button>`
+                `<button class="neu-button" onclick="filterGallery(this, '${cat}')" style="margin: 5px;">${cat}</button>`
             ).join('');
 
-            filterGallery('All 🌟');
+            // Hide the grid contents and show the placeholder
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '';
+            const placeholder = document.getElementById('gallery-placeholder');
+            if (placeholder) {
+                placeholder.style.display = 'block';
+            }
+            // Hide the shortcut container
+            const shortcutContainer = document.getElementById('order-shortcut-container');
+            if (shortcutContainer) {
+                shortcutContainer.style.display = 'none';
+            }
         }
 
-        function filterGallery(category) {
-            const grid = document.getElementById('gallery-grid');
-            const filtered = category === 'All 🌟'
-                ? galleryItems
-                : galleryItems.filter(item => item.category === category);
+        function filterGallery(btn, category) {
+            // Remove 'selected' class from all buttons
+            const buttons = document.querySelectorAll('#gallery-nav .neu-button');
+            buttons.forEach(b => b.classList.remove('selected'));
 
-            grid.innerHTML = filtered.map(item => `
-                <div class="gallery-item" data-category="${item.category}" style="padding: 0; overflow: hidden; background: var(--cookie-color); border-radius: 12px; box-shadow: inset 5px 5px 10px var(--dark-shadow), inset -5px -5px 10px var(--light-shadow); break-inside: avoid; margin-bottom: 25px; cursor: pointer;">
-                    <img src="./${item.src}" loading="lazy" alt="${item.category}" 
-                         onerror="console.warn('圖片載入失敗:', '${item.src}'); this.onerror=null; this.src='https://placehold.co/400x400?text=Not+Found';"
-                         onclick="openLightbox('./${item.src}')" style="width: 100%; height: auto; display: block; border-radius: 12px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
-                </div>
-            `).join('');
+            // Add 'selected' class to the clicked button
+            if (btn) {
+                btn.classList.add('selected');
+            }
+
+            // Hide the placeholder
+            const placeholder = document.getElementById('gallery-placeholder');
+            if (placeholder) {
+                placeholder.style.display = 'none';
+            }
+
+            // Show shortcut button if there is a corresponding product
+            const shortcutContainer = document.getElementById('order-shortcut-container');
+            const shortcutBtn = document.getElementById('order-shortcut-btn');
+            if (shortcutContainer && shortcutBtn) {
+                const prodKey = categoryToProduct[category];
+                if (prodKey) {
+                    shortcutBtn.href = `index.html?order=${prodKey}`;
+                    shortcutBtn.innerHTML = `👉 立即前往下訂「${category}」系列 🛒`;
+                    shortcutContainer.style.display = 'block';
+                } else {
+                    shortcutContainer.style.display = 'none';
+                }
+            }
+
+            const grid = document.getElementById('gallery-grid');
+            const filtered = galleryItems.filter(item => item.category === category);
+
+            grid.innerHTML = filtered.map(item => {
+                const isVideo = item.src.endsWith('.mp4');
+                if (isVideo) {
+                    return `
+                        <div class="gallery-item" data-category="${item.category}" style="padding: 0; overflow: hidden; background: var(--cookie-color); border-radius: 12px; box-shadow: inset 5px 5px 10px var(--dark-shadow), inset -5px -5px 10px var(--light-shadow); break-inside: avoid; margin-bottom: 25px; cursor: pointer;">
+                            <video src="./${item.src}" muted loop playsinline preload="metadata"
+                                   onclick="openLightbox('./${item.src}', true)"
+                                   onmouseenter="this.play()"
+                                   onmouseleave="this.pause(); this.currentTime = 0;"
+                                   style="width: 100%; height: auto; display: block; border-radius: 12px; transition: transform 0.3s ease; object-fit: cover; aspect-ratio: 1/1;"
+                                   onmouseover="this.style.transform='scale(1.05)'"
+                                   onmouseout="this.style.transform='scale(1)'"></video>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="gallery-item" data-category="${item.category}" style="padding: 0; overflow: hidden; background: var(--cookie-color); border-radius: 12px; box-shadow: inset 5px 5px 10px var(--dark-shadow), inset -5px -5px 10px var(--light-shadow); break-inside: avoid; margin-bottom: 25px; cursor: pointer;">
+                            <img src="./${item.src}" loading="lazy" alt="${item.category}" 
+                                 onerror="console.warn('圖片載入失敗:', '${item.src}'); this.onerror=null; this.src='https://placehold.co/400x400?text=Not+Found';"
+                                 onclick="openLightbox('./${item.src}', false)" style="width: 100%; height: auto; display: block; border-radius: 12px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+                        </div>
+                    `;
+                }
+            }).join('');
         }
 
         // Lightbox functionality
-        function openLightbox(src) {
+        function openLightbox(src, isVideo = false) {
             const overlay = document.getElementById('lightboxModal');
             const img = document.getElementById('lightboxImg');
-            img.src = src;
+            const video = document.getElementById('lightboxVideo');
+
+            // Pause all grid videos first
+            document.querySelectorAll('#gallery-grid video').forEach(v => {
+                v.pause();
+                v.currentTime = 0;
+            });
+
+            if (isVideo) {
+                img.style.display = 'none';
+                img.src = '';
+                video.src = src;
+                video.style.display = 'block';
+                video.currentTime = 0;
+                video.play().catch(err => console.log("Autoplay prevented:", err));
+            } else {
+                video.style.display = 'none';
+                video.pause();
+                video.src = '';
+                img.src = src;
+                img.style.display = 'block';
+            }
+
             overlay.classList.add('active');
 
             // Handle loading error in lightbox as well
@@ -179,9 +348,19 @@
 
         function closeLightbox() {
             const overlay = document.getElementById('lightboxModal');
+            const video = document.getElementById('lightboxVideo');
             overlay.classList.remove('active');
+            
+            if (video) {
+                video.pause();
+                video.currentTime = 0;
+            }
+
             setTimeout(() => {
                 document.getElementById('lightboxImg').src = '';
+                if (video) {
+                    video.src = '';
+                }
             }, 300); // Clear src after transition
         }
 
