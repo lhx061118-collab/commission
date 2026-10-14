@@ -470,7 +470,8 @@ footer {
     color: var(--text-color);
 }
 
-.form-group input[type="number"] {
+.form-group input[type="number"],
+.form-group textarea {
     width: 100%;
     padding: 10px;
     border-radius: 10px;
@@ -478,11 +479,41 @@ footer {
     background: var(--bg-color);
     color: var(--text-color);
     font-family: inherit;
+    box-sizing: border-box;
 }
 
-.form-group input[type="number"]:focus {
+.form-group input[type="number"]:focus,
+.form-group textarea:focus {
     outline: none;
     border-color: var(--accent-brown);
+}
+
+.deposit-tag {
+    font-size: 0.82rem;
+    color: #8c6853;
+    margin-top: 6px;
+    font-weight: 700;
+}
+
+.surprise-notice {
+    background: var(--cookie-color);
+    padding: 14px 18px;
+    border-radius: 16px;
+    margin: 15px 0;
+    font-size: 0.9rem;
+    border-left: 4px solid var(--accent-brown);
+    box-shadow: inset 2px 2px 5px var(--dark-shadow);
+}
+
+.deposit-breakdown {
+    background: rgba(250, 220, 217, 0.45);
+    padding: 12px 16px;
+    border-radius: 14px;
+    margin: 15px 0 10px;
+    text-align: right;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    border: 1px dashed var(--accent-brown);
 }
 
 .addon-list {
@@ -679,6 +710,11 @@ footer {
         font-size: 0.8rem !important;
         padding: 4px 10px !important;
         margin-top: 8px !important;
+    }
+
+    .menu-card .deposit-tag {
+        font-size: 0.72rem !important;
+        margin-top: 4px !important;
     }
 
     /* Process Section - 5 columns timeline style */

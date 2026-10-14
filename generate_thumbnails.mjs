@@ -2,7 +2,7 @@ import { Jimp } from 'jimp';
 import fs from 'fs';
 import path from 'path';
 
-const categories = ['場景插畫', '法國麵包', '精緻頭像', '胸像橫插', '蝴蝶餅', '鬆餅', '麵包籃'];
+const categories = ['場景插畫', '法國麵包', '精緻頭像', '胸像橫插', '蝴蝶餅', '鬆餅', '麵包籃', '驚喜麵包'];
 const baseDir = process.cwd();
 const thumbnailsDir = path.join(baseDir, 'thumbnails');
 

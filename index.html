@@ -126,6 +126,14 @@
                 <p>可以放在桌面上搖頭晃腦陪伴你的可愛軟糖小生物。</p>
                 <div class="price">NT$ 500 起</div>
             </div>
+
+            <div class="neu-card menu-card" onclick="openModal('surprise')">
+                <span class="menu-icon">🍞</span>
+                <h3>驚喜麵包 &nbsp;(Color Sketch Surprise)</h3>
+                <p>構圖隨機（大頭/半身/全身），色彩氛圍自由發揮！無草稿確認流程，付款即烤。</p>
+                <div class="price">NT$ 500 / 角色</div>
+                <div class="deposit-tag">固定收取 NT$ 200 訂金（取消不退）</div>
+            </div>
         </div>
     </section>
 
@@ -199,6 +207,27 @@
                             class="addon-cb" data-name="畫筆追蹤功能"> 畫筆追蹤功能 (+300)</label></div>
                 <div class="addon-item"><label><input type="checkbox" onchange="calculatePrice()" value="400"
                             class="addon-cb" data-name="商用"> 商用 (+400)</label></div>
+            </div>
+
+            <!-- 驚喜麵包專屬規則提示與許願欄位 -->
+            <div class="surprise-notice" id="surpriseNotice" style="display: none;">
+                <p style="font-weight: bold; margin-bottom: 6px; color: var(--accent-brown);">🍞 驚喜麵包委託規則：</p>
+                <ul style="padding-left: 20px; margin: 0; line-height: 1.6; font-size: 0.88rem;">
+                    <li><strong>定價：</strong>NT$ 500／角色（1 位 NT$ 500，2 位 NT$ 1,000，3 位 NT$ 1,500，依角色數量計價）。</li>
+                    <li><strong>固定訂金：</strong>每筆委託固定收取 <strong>NT$ 200 訂金</strong>（若中途取消，訂金不予退還）。</li>
+                    <li><strong>隨機構圖：</strong>構圖隨機（大頭、半身或全身），色彩與氛圍由繪師自由發揮。</li>
+                    <li><strong>製作流程：</strong>本項目不提供一般草稿確認流程，付款後即可開始烘焙製作。</li>
+                </ul>
+            </div>
+
+            <div class="form-group" id="surpriseWishGroup" style="display: none; margin-top: 15px;">
+                <label for="surpriseWish" style="font-weight: bold; color: var(--accent-brown);">✨ 願望或偏好（選填）：</label>
+                <textarea id="surpriseWish" rows="3" placeholder="委託人可填寫願望或偏好（例如色調氛圍關鍵字），繪師會盡量參考，但不保證完全按照願望呈現喔！"></textarea>
+                <p style="font-size: 0.78rem; color: #8c6853; margin-top: 4px;">※ 色彩與氛圍為自由發揮，願望為靈感參考性質。</p>
+            </div>
+
+            <div class="deposit-breakdown" id="depositBreakdown" style="display: none;">
+                <!-- 訂金與尾款由 JS 計算注入 -->
             </div>
 
             <div class="total-price" id="modalPrice">NT$ 0</div>
@@ -278,6 +307,9 @@
                     若中途大幅修改設定，<br>
                     可能需額外加價。
                 </p>
+                <p style="font-size: 0.82rem; color: #8c6853; margin-top: 6px;">
+                    ※ 🍞 驚喜麵包不提供草稿確認流程，付款後直接製作出爐。
+                </p>
             </div>
 
             <div class="info-card">
@@ -322,7 +354,8 @@
                 <p>
                     ❌ 取消委託<br>
                     草稿確認後取消，<br>
-                    訂金將不予退還。
+                    訂金將不予退還。<br>
+                    <span style="font-size: 0.82rem; color: #c0392b;">（※ 驚喜麵包每筆收取 NT$200 固定訂金，中途取消不予退還）</span>
                 </p>
             </div>
 
@@ -378,7 +411,12 @@
             toast: { name: '吐司 (正比頭像)', basePrice: 600 },
             donut: { name: '甜甜圈 (胸像橫插)', basePrice: 750 },
             cake: { name: '蛋糕 (氛圍插畫)', basePrice: 1000 },
-            gummy: { name: '軟糖 (Q版桌寵小人)', basePrice: 500 }
+            gummy: { name: '軟糖 (Q版桌寵小人)', basePrice: 500 },
+            surprise: {
+                name: '🍞 驚喜麵包 (Color Sketch Surprise)',
+                basePrice: 500,
+                desc: '色彩速寫驚喜包！單價 NT$500／角色，兩位 NT$1,000，三位 NT$1,500。構圖隨機（大頭/半身/全身），色彩氛圍由繪師自由發揮。無草稿確認流程，每筆固定收取 NT$200 訂金（中途取消不退）。'
+            }
         };
 
         let currentProduct = null;
@@ -388,14 +426,29 @@
             currentProduct = productId;
             const p = products[productId];
             document.getElementById('modalTitle').innerText = p.name;
+            document.getElementById('modalDesc').innerText = p.desc || '';
             document.getElementById('portionCount').value = 1;
             document.getElementById('peopleCount').value = 1;
 
+            const addonList = document.getElementById('addonList');
+            const surpriseNotice = document.getElementById('surpriseNotice');
+            const surpriseWishGroup = document.getElementById('surpriseWishGroup');
+            const surpriseWish = document.getElementById('surpriseWish');
+
             if (productId === 'gummy') {
-                document.getElementById('addonList').style.display = 'block';
+                if (addonList) addonList.style.display = 'block';
                 document.querySelectorAll('.addon-cb').forEach(cb => cb.checked = false);
             } else {
-                document.getElementById('addonList').style.display = 'none';
+                if (addonList) addonList.style.display = 'none';
+            }
+
+            if (productId === 'surprise') {
+                if (surpriseNotice) surpriseNotice.style.display = 'block';
+                if (surpriseWishGroup) surpriseWishGroup.style.display = 'block';
+                if (surpriseWish) surpriseWish.value = '';
+            } else {
+                if (surpriseNotice) surpriseNotice.style.display = 'none';
+                if (surpriseWishGroup) surpriseWishGroup.style.display = 'none';
             }
 
             calculatePrice();
@@ -416,6 +469,10 @@
                 case 'toast': basePricePerPortion = 600 + (people - 1) * 300; break;
                 case 'donut': basePricePerPortion = 750 + (people - 1) * 375; break;
                 case 'cake': basePricePerPortion = 1000 + (people - 1) * 500; break;
+                case 'surprise':
+                    // 單價：NT$500／角色。兩位角色 NT$1,000，三位角色 NT$1,500，依角色數量計價
+                    basePricePerPortion = 500 * people;
+                    break;
                 case 'gummy':
                     let addonTotal = 0;
                     document.querySelectorAll('.addon-cb:checked').forEach(cb => {
@@ -426,7 +483,23 @@
             }
 
             const total = basePricePerPortion * portions;
-            document.getElementById('modalPrice').innerText = 'NT$ ' + total.toLocaleString();
+            document.getElementById('modalPrice').innerText = '總計: NT$ ' + total.toLocaleString();
+
+            const depositBreakdown = document.getElementById('depositBreakdown');
+            if (depositBreakdown) {
+                if (currentProduct === 'surprise') {
+                    const depositTotal = 200 * portions;
+                    const balanceTotal = Math.max(0, total - depositTotal);
+                    depositBreakdown.style.display = 'block';
+                    depositBreakdown.innerHTML = `
+                        <div>固定訂金：<strong style="color: #c0392b;">NT$ ${depositTotal.toLocaleString()}</strong> <span style="font-size: 0.8rem; opacity: 0.85;">(每份 NT$ 200，中途取消不退)</span></div>
+                        <div style="margin-top: 3px;">完稿尾款：<strong style="color: var(--accent-brown);">NT$ ${balanceTotal.toLocaleString()}</strong></div>
+                    `;
+                } else {
+                    depositBreakdown.style.display = 'none';
+                }
+            }
+
             return total;
         }
 
@@ -450,17 +523,40 @@
                 });
             }
 
+            let wishes = '';
+            let deposit = 0;
+            if (currentProduct === 'surprise') {
+                const wishInput = document.getElementById('surpriseWish');
+                if (wishInput) wishes = wishInput.value.trim();
+                deposit = 200 * portions;
+            }
+
             cart.push({
                 id: currentProduct,
                 name: p.name,
                 portions,
                 people,
                 price,
-                addons
+                addons,
+                deposit,
+                wishes
             });
 
             updateCartUI();
             closeModalBtn();
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>"']/g, function(m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[m];
+            });
         }
 
         function updateCartUI() {
@@ -476,11 +572,22 @@
             const itemsContainer = document.getElementById('cartItems');
             itemsContainer.innerHTML = '';
             let total = 0;
+            let totalDeposit = 0;
 
             cart.forEach((item, index) => {
                 total += item.price;
-                let subText = `${item.portions} 份, ${item.people} 人/份`;
-                if (item.addons.length > 0) subText += `<br>加購: ${item.addons.join(', ')}`;
+                if (item.deposit) totalDeposit += item.deposit;
+
+                let subText = `${item.portions} 份, ${item.people} 位角色/份`;
+                if (item.deposit) {
+                    subText += `<br><span style="color: #c0392b;">固定訂金: NT$ ${item.deposit.toLocaleString()}（取消不退）</span>`;
+                }
+                if (item.wishes) {
+                    subText += `<br><span style="color: var(--accent-brown);">許願/偏好: ${escapeHtml(item.wishes)}</span>`;
+                }
+                if (item.addons && item.addons.length > 0) {
+                    subText += `<br>加購: ${item.addons.join(', ')}`;
+                }
 
                 itemsContainer.innerHTML += `
                     <div class="cart-item">
@@ -488,13 +595,17 @@
                             <div class="cart-item-title">${item.name}</div>
                             <div class="cart-item-subs">${subText}</div>
                         </div>
-                        <div style="font-weight: bold; color: var(--accent-brown);">NT$ ${item.price.toLocaleString()}</div>
+                        <div style="font-weight: bold; color: var(--accent-brown); min-width: 90px; text-align: right;">NT$ ${item.price.toLocaleString()}</div>
                         <div class="cart-item-remove" onclick="removeFromCart(${index})">✕</div>
                     </div>
                 `;
             });
 
-            document.getElementById('cartTotal').innerText = '總計: NT$ ' + total.toLocaleString();
+            let totalHtml = `總計: NT$ ${total.toLocaleString()}`;
+            if (totalDeposit > 0) {
+                totalHtml += `<div style="font-size: 0.9rem; color: #8c6853; font-weight: normal; margin-top: 5px;">（包含驚喜麵包固定訂金 NT$ ${totalDeposit.toLocaleString()}，尾款 NT$ ${(total - totalDeposit).toLocaleString()}）</div>`;
+            }
+            document.getElementById('cartTotal').innerHTML = totalHtml;
         }
 
         function removeFromCart(index) {
@@ -520,27 +631,56 @@
             }
             let orderText = "店長您好，我想要委託以下餐點：\n\n";
             let total = 0;
+            let totalDeposit = 0;
+
             cart.forEach((item, index) => {
                 total += item.price;
                 orderText += `${index + 1}. ${item.name}\n`;
                 orderText += `   - 份數: ${item.portions}\n`;
-                orderText += `   - 每份人數: ${item.people}\n`;
-                if (item.addons.length > 0) {
+                orderText += `   - 每份角色數: ${item.people} 位\n`;
+                if (item.deposit) {
+                    totalDeposit += item.deposit;
+                    orderText += `   - 固定訂金: NT$ ${item.deposit.toLocaleString()}（中途取消不退）\n`;
+                }
+                if (item.wishes) {
+                    orderText += `   - 許願/偏好: ${item.wishes}（自由發揮，不保證完全按願望呈現）\n`;
+                }
+                if (item.addons && item.addons.length > 0) {
                     orderText += `   - 加購: ${item.addons.join(', ')}\n`;
                 }
                 orderText += `   - 小計: NT$ ${item.price.toLocaleString()}\n\n`;
             });
+
+            orderText += `====================\n`;
             orderText += `總金額: NT$ ${total.toLocaleString()}\n`;
+            if (totalDeposit > 0) {
+                orderText += `其中驚喜麵包訂金: NT$ ${totalDeposit.toLocaleString()}\n`;
+                orderText += `完稿尾款: NT$ ${(total - totalDeposit).toLocaleString()}\n`;
+            }
 
             const copyTextArea = document.getElementById('checkoutCopy');
             copyTextArea.value = orderText;
             copyTextArea.select();
 
             try {
-                document.execCommand('copy');
-                alert("已成功複製訂單明細！\n\n點擊確認後將自動跳轉至店長FB以私信預定！");
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(orderText).then(() => {
+                        alert("已成功複製訂單明細！\n\n點擊確認後將自動跳轉至店長FB以私信預定！");
+                    }).catch(() => {
+                        document.execCommand('copy');
+                        alert("已成功複製訂單明細！\n\n點擊確認後將自動跳轉至店長FB以私信預定！");
+                    });
+                } else {
+                    document.execCommand('copy');
+                    alert("已成功複製訂單明細！\n\n點擊確認後將自動跳轉至店長FB以私信預定！");
+                }
             } catch (err) {
-                alert("複製失敗，請手動複製！\n\n" + orderText);
+                try {
+                    document.execCommand('copy');
+                    alert("已成功複製訂單明細！\n\n點擊確認後將自動跳轉至店長FB以私信預定！");
+                } catch(e) {
+                    alert("複製失敗，請手動複製！\n\n" + orderText);
+                }
             }
 
             window.open("https://www.facebook.com/share/1E2dvRGXvg/", "_blank");

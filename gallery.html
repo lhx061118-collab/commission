@@ -45,15 +45,164 @@
             transform: scale(1) !important;
         }
 
+        /* Gallery Nav Container & Mobile Scrolling Enhancements */
+        .gallery-nav-wrapper {
+            position: relative;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .gallery-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        /* Gradient fade masks */
+        .nav-mask {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 5;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        .nav-mask-left {
+            left: 0;
+            width: 40px;
+            background: linear-gradient(to right, #FDFCF0 25%, rgba(253, 252, 240, 0));
+        }
+
+        .nav-mask-right {
+            right: 0;
+            width: 48px;
+            background: linear-gradient(to left, #FDFCF0 25%, rgba(253, 252, 240, 0));
+        }
+
+        .nav-mask.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Nav Scroll Buttons (Functional Arrows) */
+        .nav-scroll-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            border: 1.5px solid var(--accent-pink);
+            color: var(--accent-brown);
+            font-size: 16px;
+            line-height: 1;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 6;
+            box-shadow: 2px 2px 6px var(--dark-shadow);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.15s ease, background-color 0.2s ease;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .nav-scroll-btn.active {
+            opacity: 0.95;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .nav-scroll-btn:hover {
+            background-color: var(--cookie-color);
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .nav-scroll-btn:active {
+            transform: translateY(-50%) scale(0.92);
+        }
+
+        .nav-scroll-left {
+            left: 3px;
+        }
+
+        .nav-scroll-right {
+            right: 3px;
+        }
+
+        /* Mobile Scroll Hint Text */
+        .gallery-nav-hint {
+            display: none;
+            text-align: center;
+            font-size: 0.78rem;
+            color: #9A857A;
+            margin: 2px auto 20px;
+            letter-spacing: 0.5px;
+            user-select: none;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            opacity: 0.85;
+            transition: opacity 0.25s ease;
+        }
+
+        .gallery-nav-hint .hint-arrow {
+            font-size: 0.82rem;
+            color: var(--accent-brown);
+            display: inline-block;
+        }
+
+        /* Desktop: hide mobile-only indicators and keep natural centered wrapping layout */
+        @media (min-width: 769px) {
+            .nav-mask,
+            .nav-scroll-btn,
+            .gallery-nav-hint {
+                display: none !important;
+            }
+            .gallery-nav-wrapper {
+                overflow: visible !important;
+            }
+            .gallery-nav {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+                overflow: visible !important;
+                padding: 0 !important;
+            }
+        }
+
+        /* Mobile specific styles */
         @media (max-width: 768px) {
+            .gallery-page {
+                padding-left: 4vw !important;
+                padding-right: 4vw !important;
+            }
+            .gallery-nav-wrapper {
+                overflow: hidden;
+                margin-bottom: 4px;
+            }
             .gallery-nav {
                 display: flex !important;
                 flex-wrap: nowrap !important;
                 overflow-x: auto !important;
+                overflow-y: hidden !important;
                 justify-content: flex-start !important;
-                padding: 10px 5px !important;
+                padding: 8px 18px 8px 12px !important;
                 gap: 8px !important;
+                margin-bottom: 0 !important;
                 -webkit-overflow-scrolling: touch;
+                scroll-behavior: smooth;
+                scrollbar-width: none;
             }
             .gallery-nav::-webkit-scrollbar {
                 display: none;
@@ -61,7 +210,11 @@
             .gallery-nav .neu-button {
                 flex: 0 0 auto !important;
                 padding: 8px 16px !important;
-                font-size: 0.9rem !important;
+                font-size: 0.88rem !important;
+                margin: 0 !important;
+            }
+            .gallery-nav-hint {
+                display: flex;
             }
             .gallery-grid {
                 grid-template-columns: repeat(2, 1fr) !important;
@@ -100,10 +253,19 @@
             </a>
         </div>
 
-        <div class="gallery-nav" id="gallery-nav" style="flex-wrap: wrap;">
-            <!-- Buttons dynamically injected here -->
+        <div class="gallery-nav-wrapper" id="galleryNavWrapper">
+            <button class="nav-scroll-btn nav-scroll-left" id="navScrollLeft" aria-label="向左滾動分類" onclick="scrollNav('left')">‹</button>
+            <div class="gallery-nav" id="gallery-nav">
+                <!-- Buttons dynamically injected here -->
+            </div>
+            <button class="nav-scroll-btn nav-scroll-right" id="navScrollRight" aria-label="向右滾動分類" onclick="scrollNav('right')">›</button>
+            <div class="nav-mask nav-mask-left" id="navMaskLeft"></div>
+            <div class="nav-mask nav-mask-right" id="navMaskRight"></div>
         </div>
-        <div id="gallery-placeholder" style="text-align: center; font-size: 1.5rem; font-weight: 700; color: var(--accent-brown); margin: 40px 0 20px;">
+        <div class="gallery-nav-hint" id="galleryNavHint">
+            <span class="hint-arrow">←</span> 左右滑動查看更多分類 <span class="hint-arrow">→</span>
+        </div>
+        <div id="gallery-placeholder" style="text-align: center; font-size: 1.5rem; font-weight: 700; color: var(--accent-brown); margin: 30px 0 20px;">
             請選擇項目開啟例圖
         </div>
         <div id="order-shortcut-container" style="text-align: center; margin-bottom: 25px; display: none;">
@@ -128,104 +290,414 @@
     </footer>
 
     <script>
+        // ===================================================================
+        // 🍞 作品展示資料 (galleryItems)
+        // 您可以隨時在此替換或新增「驚喜麵包」與其他分類的圖片路徑：
+        // 範例：{ "src": "驚喜麵包/作品1.png", "category": "驚喜麵包" }
+        // 亦可將圖片放入對應資料夾後，執行 node update_gallery.mjs 一鍵更新！
+        // ===================================================================
         const galleryItems = [
-            { "src": "麵包籃/101+.jpg", "category": "麵包籃" },
-            { "src": "麵包籃/108+.jpg", "category": "麵包籃" },
-            { "src": "麵包籃/109+.jpg", "category": "麵包籃" },
-            { "src": "麵包籃/50+.png", "category": "麵包籃" },
-            { "src": "麵包籃/55+.png", "category": "麵包籃" },
-            { "src": "麵包籃/56+.png", "category": "麵包籃" },
-            { "src": "麵包籃/63+.png", "category": "麵包籃" },
-            { "src": "麵包籃/75+.jpg", "category": "麵包籃" },
-            { "src": "麵包籃/79+.jpg", "category": "麵包籃" },
-            { "src": "麵包籃/81+.jpg", "category": "麵包籃" },
-            { "src": "麵包籃/87+.jpg", "category": "麵包籃" },
-            { "src": "麵包籃/94+.jpg", "category": "麵包籃" },
-            { "src": "法國麵包/110+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/100_2+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/106+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/19.png", "category": "法國麵包" },
-            { "src": "法國麵包/20.png", "category": "法國麵包" },
-            { "src": "法國麵包/22.png", "category": "法國麵包" },
-            { "src": "法國麵包/24.png", "category": "法國麵包" },
-            { "src": "法國麵包/26.png", "category": "法國麵包" },
-            { "src": "法國麵包/28.png", "category": "法國麵包" },
-            { "src": "法國麵包/29.png", "category": "法國麵包" },
-            { "src": "法國麵包/30.png", "category": "法國麵包" },
-            { "src": "法國麵包/31.png", "category": "法國麵包" },
-            { "src": "法國麵包/52+.png", "category": "法國麵包" },
-            { "src": "法國麵包/54-4+.png", "category": "法國麵包" },
-            { "src": "法國麵包/54-5+.png", "category": "法國麵包" },
-            { "src": "法國麵包/57+.png", "category": "法國麵包" },
-            { "src": "法國麵包/60+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/71+.png", "category": "法國麵包" },
-            { "src": "法國麵包/73+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/76+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/77+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/78+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/80+.jpg", "category": "法國麵包" },
-            { "src": "法國麵包/molesai.png", "category": "法國麵包" },
-            { "src": "精緻頭像/567.png", "category": "精緻頭像" },
-            { "src": "精緻頭像/tim.png", "category": "精緻頭像" },
-            { "src": "精緻頭像/91+.jpg", "category": "精緻頭像" },
-            { "src": "精緻頭像/96+.jpg", "category": "精緻頭像" },
-            { "src": "精緻頭像/49+.png", "category": "精緻頭像" },
-            { "src": "胸像橫插/balu.png", "category": "胸像橫插" },
-            { "src": "胸像橫插/48+.png", "category": "胸像橫插" },
-            { "src": "胸像橫插/51+.png", "category": "胸像橫插" },
-            { "src": "胸像橫插/58+.jpg", "category": "胸像橫插" },
-            { "src": "胸像橫插/64+.png", "category": "胸像橫插" },
-            { "src": "胸像橫插/74+.jpg", "category": "胸像橫插" },
-            { "src": "胸像橫插/84+.jpg", "category": "胸像橫插" },
-            { "src": "胸像橫插/86+.jpg", "category": "胸像橫插" },
-            { "src": "胸像橫插/88+.jpg", "category": "胸像橫插" },
-            { "src": "胸像橫插/90+.jpg", "category": "胸像橫插" },
-            { "src": "胸像橫插/95+.jpg", "category": "胸像橫插" },
-            { "src": "胸像橫插/97+.jpg", "category": "胸像橫插" },
-            { "src": "胸像橫插/98+.jpg", "category": "胸像橫插" },
-            { "src": "蝴蝶餅/tosi.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/1+.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/2+.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/3+.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/4+.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/5+.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/6+.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/7+.png", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/8+.jpg", "category": "蝴蝶餅" },
-            { "src": "蝴蝶餅/9+.jpg", "category": "蝴蝶餅" },
-            { "src": "鬆餅/111+.jpg", "category": "鬆餅" },
-            { "src": "鬆餅/107+.jpg", "category": "鬆餅" },
-            { "src": "鬆餅/me.png", "category": "鬆餅" },
-            { "src": "鬆餅/swim.png", "category": "鬆餅" },
-            { "src": "鬆餅/flower.png", "category": "鬆餅" },
-            { "src": "鬆餅/11.png", "category": "鬆餅" },
-            { "src": "鬆餅/83+.jpg", "category": "鬆餅" },
-            { "src": "鬆餅/67+.jpg", "category": "鬆餅" },
-            { "src": "鬆餅/68+.jpg", "category": "鬆餅" },
-            { "src": "場景插畫/dasu.png", "category": "場景插畫" },
-            { "src": "場景插畫/silsu.png", "category": "場景插畫" },
-            { "src": "場景插畫/37+.png", "category": "場景插畫" },
-            { "src": "場景插畫/39+.png", "category": "場景插畫" },
-            { "src": "場景插畫/40+.png", "category": "場景插畫" },
-            { "src": "場景插畫/41+.png", "category": "場景插畫" },
-            { "src": "場景插畫/43+.png", "category": "場景插畫" },
-            { "src": "場景插畫/47+.jpg", "category": "場景插畫" },
-            { "src": "場景插畫/62+.png", "category": "場景插畫" },
-            { "src": "場景插畫/65+.png", "category": "場景插畫" },
-            { "src": "場景插畫/69+.jpg", "category": "場景插畫" },
-            { "src": "場景插畫/82+.jpg", "category": "場景插畫" },
-            { "src": "場景插畫/89+.jpg", "category": "場景插畫" },
-            { "src": "場景插畫/92+.jpg", "category": "場景插畫" },
-            { "src": "場景插畫/93+.jpg", "category": "場景插畫" },
-            { "src": "場景插畫/su.png", "category": "場景插畫" },
-            { "src": "軟糖小人/1.mp4", "category": "軟糖小人" },
-            { "src": "軟糖小人/2.mp4", "category": "軟糖小人" },
-            { "src": "軟糖小人/3.mp4", "category": "軟糖小人" },
-            { "src": "軟糖小人/4.mp4", "category": "軟糖小人" },
-            { "src": "軟糖小人/5.mp4", "category": "軟糖小人" },
-            { "src": "軟糖小人/6.mp4", "category": "軟糖小人" },
-            { "src": "軟糖小人/7.mp4", "category": "軟糖小人" }
-        ];
+    {
+        "src": "場景插畫/37+.png",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/39+.png",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/40+.png",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/41+.png",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/43+.png",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/47+.jpg",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/62+.png",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/65+.png",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/69+.jpg",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/82+.jpg",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/89+.jpg",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/92+.jpg",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/93+.jpg",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/97+.jpg",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/98+.jpg",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/dasu.png",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/silsu.png",
+        "category": "場景插畫"
+    },
+    {
+        "src": "場景插畫/su.png",
+        "category": "場景插畫"
+    },
+    {
+        "src": "法國麵包/100_2+.jpg",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/106+.jpg",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/110+.jpg",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/19.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/20.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/22.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/24.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/26.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/28.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/29.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/30.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/31.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/52+.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/54-4+.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/54-5+.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/57+.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/60+.jpg",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/71+.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/73+.jpg",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/76+.jpg",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/77+.jpg",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/78+.jpg",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/80+.jpg",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/molesai.png",
+        "category": "法國麵包"
+    },
+    {
+        "src": "精緻頭像/49+.png",
+        "category": "精緻頭像"
+    },
+    {
+        "src": "精緻頭像/567.png",
+        "category": "精緻頭像"
+    },
+    {
+        "src": "精緻頭像/91+.jpg",
+        "category": "精緻頭像"
+    },
+    {
+        "src": "精緻頭像/96+.jpg",
+        "category": "精緻頭像"
+    },
+    {
+        "src": "精緻頭像/tim.png",
+        "category": "精緻頭像"
+    },
+    {
+        "src": "胸像橫插/48+.png",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "胸像橫插/51+.png",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "胸像橫插/58+.jpg",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "胸像橫插/64+.png",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "胸像橫插/74+.jpg",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "胸像橫插/84+.jpg",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "胸像橫插/86+.jpg",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "胸像橫插/88+.jpg",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "胸像橫插/90+.jpg",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "胸像橫插/95+.jpg",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "胸像橫插/97+.jpg",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "胸像橫插/98+.jpg",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "胸像橫插/balu.png",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "蝴蝶餅/1+.png",
+        "category": "蝴蝶餅"
+    },
+    {
+        "src": "蝴蝶餅/2+.png",
+        "category": "蝴蝶餅"
+    },
+    {
+        "src": "蝴蝶餅/3+.png",
+        "category": "蝴蝶餅"
+    },
+    {
+        "src": "蝴蝶餅/4+.png",
+        "category": "蝴蝶餅"
+    },
+    {
+        "src": "蝴蝶餅/5+.png",
+        "category": "蝴蝶餅"
+    },
+    {
+        "src": "蝴蝶餅/6+.png",
+        "category": "蝴蝶餅"
+    },
+    {
+        "src": "蝴蝶餅/7+.png",
+        "category": "蝴蝶餅"
+    },
+    {
+        "src": "蝴蝶餅/8+.jpg",
+        "category": "蝴蝶餅"
+    },
+    {
+        "src": "蝴蝶餅/9+.jpg",
+        "category": "蝴蝶餅"
+    },
+    {
+        "src": "蝴蝶餅/tosi.png",
+        "category": "蝴蝶餅"
+    },
+    {
+        "src": "鬆餅/107+.jpg",
+        "category": "鬆餅"
+    },
+    {
+        "src": "鬆餅/11.png",
+        "category": "鬆餅"
+    },
+    {
+        "src": "鬆餅/111+.jpg",
+        "category": "鬆餅"
+    },
+    {
+        "src": "鬆餅/67+.jpg",
+        "category": "鬆餅"
+    },
+    {
+        "src": "鬆餅/68+.jpg",
+        "category": "鬆餅"
+    },
+    {
+        "src": "鬆餅/83+.jpg",
+        "category": "鬆餅"
+    },
+    {
+        "src": "鬆餅/flower.png",
+        "category": "鬆餅"
+    },
+    {
+        "src": "鬆餅/me.png",
+        "category": "鬆餅"
+    },
+    {
+        "src": "鬆餅/swim.png",
+        "category": "鬆餅"
+    },
+    {
+        "src": "麵包籃/101+.jpg",
+        "category": "麵包籃"
+    },
+    {
+        "src": "麵包籃/108+.jpg",
+        "category": "麵包籃"
+    },
+    {
+        "src": "麵包籃/109+.jpg",
+        "category": "麵包籃"
+    },
+    {
+        "src": "麵包籃/50+.png",
+        "category": "麵包籃"
+    },
+    {
+        "src": "麵包籃/55+.png",
+        "category": "麵包籃"
+    },
+    {
+        "src": "麵包籃/56+.png",
+        "category": "麵包籃"
+    },
+    {
+        "src": "麵包籃/63+.png",
+        "category": "麵包籃"
+    },
+    {
+        "src": "麵包籃/75+.jpg",
+        "category": "麵包籃"
+    },
+    {
+        "src": "麵包籃/79+.jpg",
+        "category": "麵包籃"
+    },
+    {
+        "src": "麵包籃/81+.jpg",
+        "category": "麵包籃"
+    },
+    {
+        "src": "麵包籃/87+.jpg",
+        "category": "麵包籃"
+    },
+    {
+        "src": "麵包籃/94+.jpg",
+        "category": "麵包籃"
+    },
+    {
+        "src": "麵包籃/sinlugu.png",
+        "category": "麵包籃"
+    },
+    {
+        "src": "驚喜麵包/sample1.png",
+        "category": "驚喜麵包"
+    },
+    {
+        "src": "軟糖小人/1.mp4",
+        "category": "軟糖小人"
+    },
+    {
+        "src": "軟糖小人/2.mp4",
+        "category": "軟糖小人"
+    },
+    {
+        "src": "軟糖小人/3.mp4",
+        "category": "軟糖小人"
+    },
+    {
+        "src": "軟糖小人/4.mp4",
+        "category": "軟糖小人"
+    },
+    {
+        "src": "軟糖小人/5.mp4",
+        "category": "軟糖小人"
+    },
+    {
+        "src": "軟糖小人/6.mp4",
+        "category": "軟糖小人"
+    },
+    {
+        "src": "軟糖小人/7.mp4",
+        "category": "軟糖小人"
+    }
+];
 
         const categoryToProduct = {
             '蝴蝶餅': 'pretzel',
@@ -235,16 +707,79 @@
             '精緻頭像': 'toast',
             '胸像橫插': 'donut',
             '場景插畫': 'cake',
-            '軟糖小人': 'gummy'
+            '軟糖小人': 'gummy',
+            '驚喜麵包': 'surprise'
         };
+
+        // Mobile horizontal scroll and indicator logic
+        function scrollNav(direction) {
+            const nav = document.getElementById('gallery-nav');
+            if (!nav) return;
+            const distance = Math.max(160, nav.clientWidth * 0.65);
+            const scrollAmount = direction === 'left' ? -distance : distance;
+            nav.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+
+        function updateNavScrollState() {
+            const nav = document.getElementById('gallery-nav');
+            if (!nav) return;
+
+            const maskLeft = document.getElementById('navMaskLeft');
+            const maskRight = document.getElementById('navMaskRight');
+            const btnLeft = document.getElementById('navScrollLeft');
+            const btnRight = document.getElementById('navScrollRight');
+            const hint = document.getElementById('galleryNavHint');
+
+            const scrollLeft = nav.scrollLeft;
+            const scrollWidth = nav.scrollWidth;
+            const clientWidth = nav.clientWidth;
+            const maxScroll = scrollWidth - clientWidth;
+
+            // Check if scrolling is needed (threshold of 4px for subpixel differences)
+            const isScrollable = maxScroll > 4;
+
+            if (!isScrollable) {
+                if (maskLeft) maskLeft.classList.remove('active');
+                if (maskRight) maskRight.classList.remove('active');
+                if (btnLeft) btnLeft.classList.remove('active');
+                if (btnRight) btnRight.classList.remove('active');
+                if (hint) hint.style.display = 'none';
+                return;
+            }
+
+            // On mobile screens, show hint if scrollable
+            if (window.innerWidth <= 768 && hint) {
+                hint.style.display = 'flex';
+            }
+
+            // Can we scroll left?
+            const canScrollLeft = scrollLeft > 6;
+            if (maskLeft) maskLeft.classList.toggle('active', canScrollLeft);
+            if (btnLeft) btnLeft.classList.toggle('active', canScrollLeft);
+
+            // Can we scroll right?
+            const canScrollRight = scrollLeft < maxScroll - 6;
+            if (maskRight) maskRight.classList.toggle('active', canScrollRight);
+            if (btnRight) btnRight.classList.toggle('active', canScrollRight);
+        }
+
+        function initNavScroll() {
+            const nav = document.getElementById('gallery-nav');
+            if (nav) {
+                nav.addEventListener('scroll', updateNavScrollState, { passive: true });
+            }
+            window.addEventListener('resize', updateNavScrollState);
+            setTimeout(updateNavScrollState, 80);
+        }
 
         function renderGallery() {
             const nav = document.getElementById('gallery-nav');
             const categories = [...new Set(galleryItems.map(item => item.category))];
 
-            nav.innerHTML = categories.map(cat =>
-                `<button class="neu-button" onclick="filterGallery(this, '${cat}')" style="margin: 5px;">${cat}</button>`
-            ).join('');
+            nav.innerHTML = categories.map(cat => {
+                const label = (cat === '驚喜麵包') ? '🍞 驚喜麵包' : cat;
+                return `<button class="neu-button" onclick="filterGallery(this, '${cat}')">${label}</button>`;
+            }).join('');
 
             // Hide the grid contents and show the placeholder
             const grid = document.getElementById('gallery-grid');
@@ -258,6 +793,8 @@
             if (shortcutContainer) {
                 shortcutContainer.style.display = 'none';
             }
+
+            setTimeout(updateNavScrollState, 50);
         }
 
         function filterGallery(btn, category) {
@@ -268,6 +805,16 @@
             // Add 'selected' class to the clicked button
             if (btn) {
                 btn.classList.add('selected');
+
+                // On mobile, smoothly center the clicked category button in the scroll view
+                if (btn.parentElement && window.innerWidth <= 768) {
+                    const parent = btn.parentElement;
+                    const btnLeft = btn.offsetLeft;
+                    const btnWidth = btn.offsetWidth;
+                    const parentWidth = parent.clientWidth;
+                    const targetScroll = btnLeft - (parentWidth / 2) + (btnWidth / 2);
+                    parent.scrollTo({ left: targetScroll, behavior: 'smooth' });
+                }
             }
 
             // Hide the placeholder
@@ -283,7 +830,8 @@
                 const prodKey = categoryToProduct[category];
                 if (prodKey) {
                     shortcutBtn.href = `index.html?order=${prodKey}`;
-                    shortcutBtn.innerHTML = `👉 立即前往下訂「${category}」系列 🛒`;
+                    const label = (category === '驚喜麵包') ? '🍞 驚喜麵包' : category;
+                    shortcutBtn.innerHTML = `👉 立即前往下訂「${label}」系列 🛒`;
                     shortcutContainer.style.display = 'block';
                 } else {
                     shortcutContainer.style.display = 'none';
@@ -393,7 +941,10 @@
             });
         });
 
-        document.addEventListener('DOMContentLoaded', renderGallery);
+        document.addEventListener('DOMContentLoaded', () => {
+            renderGallery();
+            initNavScroll();
+        });
     </script>
 </body>
 

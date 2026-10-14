@@ -5,7 +5,7 @@ import json
 base_dir = os.getcwd()
 html_path = os.path.join(base_dir, "gallery.html")
 
-categories = ['場景插畫', '法國麵包', '精緻頭像', '胸像橫插', '蝴蝶餅', '鬆餅', '麵包籃']
+categories = ['場景插畫', '法國麵包', '精緻頭像', '胸像橫插', '蝴蝶餅', '鬆餅', '麵包籃', '驚喜麵包']
 images_data = []
 
 for cat in categories:
