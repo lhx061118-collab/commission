@@ -492,7 +492,7 @@
                     const balanceTotal = Math.max(0, total - depositTotal);
                     depositBreakdown.style.display = 'block';
                     depositBreakdown.innerHTML = `
-                        <div>固定訂金：<strong style="color: #c0392b;">NT$ ${depositTotal.toLocaleString()}</strong> <span style="font-size: 0.8rem; opacity: 0.85;">(每份 NT$ 200，中途取消不退)</span></div>
+                        <div>固定訂金：<strong style="color: #c0392b;">NT$ ${depositTotal.toLocaleString()}</strong> <span style="font-size: 0.8rem; opacity: 0.85;">(每份 NT$ 200，含在底價內，取消不退)</span></div>
                         <div style="margin-top: 3px;">完稿尾款：<strong style="color: var(--accent-brown);">NT$ ${balanceTotal.toLocaleString()}</strong></div>
                     `;
                 } else {
