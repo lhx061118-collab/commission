@@ -777,7 +777,7 @@
             const categories = [...new Set(galleryItems.map(item => item.category))];
 
             nav.innerHTML = categories.map(cat => {
-                const label = (cat === '驚喜麵包') ? '🍞 驚喜麵包' : cat;
+                const label = (cat === '驚喜麵包') ? '驚喜麵包' : cat;
                 return `<button class="neu-button" onclick="filterGallery(this, '${cat}')">${label}</button>`;
             }).join('');
 
