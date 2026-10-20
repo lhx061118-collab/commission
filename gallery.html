@@ -774,12 +774,44 @@
 
         function renderGallery() {
             const nav = document.getElementById('gallery-nav');
-            const categories = [...new Set(galleryItems.map(item => item.category))];
+            
+            // 依照您要求的順序進行從左到右排序
+            const customOrder = [
+                '蝴蝶餅', 
+                '法國麵包', 
+                '鬆餅', 
+                '麵包籃', 
+                '正比頭像', 
+                '胸像橫插', 
+                '驚喜麵包'
+            ];
+            
+            const existingCategories = [...new Set(galleryItems.map(item => item.category))];
+            const sortedCategories = customOrder.filter(cat => existingCategories.includes(cat));
+            existingCategories.forEach(cat => {
+                if (!sortedCategories.includes(cat)) sortedCategories.push(cat);
+            });
 
-            nav.innerHTML = categories.map(cat => {
+            nav.innerHTML = sortedCategories.map(cat => {
                 const label = (cat === '驚喜麵包') ? '驚喜麵包' : cat;
                 return `<button class="neu-button" onclick="filterGallery(this, '${cat}')">${label}</button>`;
             }).join('');
+
+            // Hide the grid contents and show the placeholder
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '';
+            const placeholder = document.getElementById('gallery-placeholder');
+            if (placeholder) {
+                placeholder.style.display = 'block';
+            }
+            // Hide the shortcut container
+            const shortcutContainer = document.getElementById('order-shortcut-container');
+            if (shortcutContainer) {
+                shortcutContainer.style.display = 'none';
+            }
+
+            setTimeout(updateNavScrollState, 50);
+        }
 
             // Hide the grid contents and show the placeholder
             const grid = document.getElementById('gallery-grid');
