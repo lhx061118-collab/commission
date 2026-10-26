@@ -39,7 +39,7 @@
             <a href="#menu" class="neu-button">點餐去 🍽️</a>
         </div>
         <div class="hero-image">
-            <img src="top.jpg" class="hero-img" alt="Mascot"
+            <img src="mo2.png" class="hero-img" alt="Mascot"
                 onerror="this.onerror=null; this.src='https://placehold.co/400x400?text=No+Image';">
         </div>
     </section>
@@ -54,11 +54,22 @@
             </p>
 
             <span class="queue-text">
-                目前排單：至2026/11/10
+                目前排單：至2026/10/25
             </span>
 
-            <p style="font-size: 0.8rem; opacity: 0.6; margin-top: -10px; margin-bottom: 20px;">
-                最後更新：2026 / 10 / 15
+            <!-- 📢 店長公告欄區塊 (新增) -->
+            <div class="status-notice" style="background: rgba(255, 248, 240, 0.9); border: 2px dashed #dca376; border-radius: 12px; padding: 12px 16px; margin: 15px auto; max-width: 90%; text-align: left; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                <div style="font-weight: bold; color: #8c5230; font-size: 0.95rem; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                    <span>📢</span> 店長公告欄
+                </div>
+                <p style="font-size: 0.88rem; color: #5c3e2b; margin: 0; line-height: 1.5;">
+                    ✨ <strong>預告通知：</strong> 預計於 11 月起部分品項（吐司、甜甜圈）將進行價格微調，欲以現行價格預約請提前私訊排單喔！<br>
+                    🎉 <strong>特殊活動：</strong> 目前驚喜麵包開放中，歡迎挑選你的驚喜點心！
+                </p>
+            </div>
+
+            <p style="font-size: 0.8rem; opacity: 0.6; margin-top: 10px; margin-bottom: 20px;">
+                最後更新：2026 / 10 / 26
             </p>
 
             <a href="https://www.facebook.com/share/1E2dvRGXvg/" target="_blank" class="status-btn" id="statusBtn">
@@ -470,7 +481,6 @@
                 case 'donut': basePricePerPortion = 750 + (people - 1) * 375; break;
                 case 'cake': basePricePerPortion = 1000 + (people - 1) * 500; break;
                 case 'surprise':
-                    // 單價：NT$500／角色。兩位角色 NT$1,000，三位角色 NT$1,500，依角色數量計價
                     basePricePerPortion = 500 * people;
                     break;
                 case 'gummy':
@@ -686,7 +696,6 @@
             window.open("https://www.facebook.com/share/1E2dvRGXvg/", "_blank");
         }
 
-        // Simple script to adjust arrow visibility based on screen resize
         window.addEventListener('resize', () => {
             const arrows = document.querySelectorAll('.step-arrow');
             if (window.innerWidth <= 768) {
@@ -696,7 +705,6 @@
             }
         });
 
-        // Add fun random floating to decor emojis
         document.querySelectorAll('.decor').forEach(el => {
             el.animate([
                 { transform: 'translateY(0) rotate(0deg)' },
@@ -709,14 +717,12 @@
             });
         });
 
-        // Add slight tilt to images on mouse move for gallery
         document.addEventListener('mousemove', (e) => {
             const cards = document.querySelectorAll('.menu-card');
             const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
             const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
 
             cards.forEach(card => {
-                // Only apply to cards that are being hovered
                 if (card.matches(':hover')) {
                     card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg) scale(1.02)`;
                 } else {
@@ -743,7 +749,6 @@
                 statusBtn.textContent = "查看作品";
             }
 
-            // Auto open product modal if 'order' parameter is in URL
             const urlParams = new URLSearchParams(window.location.search);
             const orderProduct = urlParams.get('order');
             if (orderProduct && products[orderProduct]) {
