@@ -745,7 +745,8 @@
     }
 ];
 
-        const categoryToProduct = (typeof window.categoryToProduct !== 'undefined') ? window.categoryToProduct : {
+        // 取得分類對應品項表（優先使用 products.js）
+        var categoryToProduct = (typeof window !== 'undefined' && window.categoryToProduct) ? window.categoryToProduct : {
             '蝴蝶餅': 'pretzel',
             '法國麵包': 'baguette',
             '鬆餅': 'pancake',
@@ -758,28 +759,30 @@
             '驚喜麵包': 'surprise'
         };
 
-        // 輔助函式：檢查分類是否開放中（聯動 products.js 中的 isOpen 狀態）
-        if (typeof isCategoryOpen !== 'function') {
-            window.isCategoryOpen = function(cat) {
-                const prodKey = categoryToProduct[cat];
-                if (!prodKey) return true;
-                const list = (typeof commissionProducts !== 'undefined') ? commissionProducts : (typeof products !== 'undefined' ? products : null);
-                if (list && list[prodKey]) {
-                    return list[prodKey].isOpen !== false;
-                }
-                return true;
-            };
+        // 輔助函式：檢查分類是否開放中（優先使用 products.js 中的 isCategoryOpen）
+        function checkCategoryIsOpen(cat) {
+            if (typeof window !== 'undefined' && typeof window.isCategoryOpen === 'function') {
+                return window.isCategoryOpen(cat);
+            }
+            var prodKey = categoryToProduct[cat];
+            if (!prodKey) return true;
+            var list = (typeof window !== 'undefined' && (window.commissionProducts || window.products)) ? (window.commissionProducts || window.products) : null;
+            if (list && list[prodKey]) {
+                return list[prodKey].isOpen !== false;
+            }
+            return true;
         }
 
-        if (typeof isProductOpen !== 'function') {
-            window.isProductOpen = function(prodKey) {
-                if (!prodKey) return false;
-                const list = (typeof commissionProducts !== 'undefined') ? commissionProducts : (typeof products !== 'undefined' ? products : null);
-                if (list && list[prodKey]) {
-                    return list[prodKey].isOpen !== false;
-                }
-                return true;
-            };
+        function checkProductIsOpen(prodKey) {
+            if (typeof window !== 'undefined' && typeof window.isProductOpen === 'function') {
+                return window.isProductOpen(prodKey);
+            }
+            if (!prodKey) return false;
+            var list = (typeof window !== 'undefined' && (window.commissionProducts || window.products)) ? (window.commissionProducts || window.products) : null;
+            if (list && list[prodKey]) {
+                return list[prodKey].isOpen !== false;
+            }
+            return true;
         }
 
         // Mobile horizontal scroll and indicator logic
@@ -866,7 +869,7 @@
             });
 
             // 聯動 isOpen 狀態：若 isOpen 為 false 則將該委託展示分類隱藏，不讓訪客看見
-            const openCategories = sortedCategories.filter(cat => isCategoryOpen(cat));
+            const openCategories = sortedCategories.filter(cat => checkCategoryIsOpen(cat));
 
             if (openCategories.length === 0) {
                 nav.innerHTML = '<p style="color: var(--accent-brown); font-weight: bold; padding: 15px;">目前所有委託展示項目皆暫停開放中</p>';
@@ -896,7 +899,7 @@
 
         function filterGallery(btn, category) {
             // 安全防護：檢查該委託項目是否開放，若已關閉則不予展示
-            if (!isCategoryOpen(category)) {
+            if (!checkCategoryIsOpen(category)) {
                 alert('抱歉，此項目目前暫停接單，暫不提供例圖展示。');
                 return;
             }
@@ -931,7 +934,7 @@
             const shortcutBtn = document.getElementById('order-shortcut-btn');
             if (shortcutContainer && shortcutBtn) {
                 const prodKey = categoryToProduct[category];
-                if (prodKey && isProductOpen(prodKey)) {
+                if (prodKey && checkProductIsOpen(prodKey)) {
                     shortcutBtn.href = `index.html?order=${prodKey}`;
                     const label = (category === '驚喜麵包') ? '🍞 驚喜麵包' : category;
                     shortcutBtn.innerHTML = `👉 立即前往下訂「${label}」系列 🛒`;
@@ -943,7 +946,7 @@
 
             const grid = document.getElementById('gallery-grid');
             // Filter: must match category AND must be open
-            const filtered = galleryItems.filter(item => item.category === category && isCategoryOpen(item.category));
+            const filtered = galleryItems.filter(item => item.category === category && checkCategoryIsOpen(item.category));
 
             if (filtered.length === 0) {
                 grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--accent-brown); padding: 30px;">此分類目前無展示圖片或暫停開放。</p>';
@@ -1050,10 +1053,16 @@
             });
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
+        function initGalleryPage() {
             renderGallery();
             initNavScroll();
-        });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initGalleryPage);
+        } else {
+            initGalleryPage();
+        }
     </script>
 </body>
 
