@@ -9,6 +9,8 @@
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=M+PLUS+Rounded+1c:wght@400;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- 引入委託品項資料庫與開放狀態開關 (修改品項 isOpen 請至 products.js) -->
+    <script src="products.js"></script>
     <style>
         /* Highlight selected category button */
         #gallery-nav .neu-button.selected {
@@ -297,7 +299,7 @@
         // 亦可將圖片放入對應資料夾後，執行 node update_gallery.mjs 一鍵更新！
         // ===================================================================
         const galleryItems = [
-   {
+    {
         "src": "場景插畫/37+.png",
         "category": "場景插畫"
     },
@@ -370,18 +372,6 @@
         "category": "場景插畫"
     },
     {
-        "src": "法國麵包/114+.jpg",
-        "category": "法國麵包"
-    },
-    {
-        "src": "法國麵包/113+.jpg",
-        "category": "法國麵包"
-    },
-    {
-        "src": "法國麵包/112+.jpg",
-        "category": "法國麵包"
-    },
-    {
         "src": "法國麵包/100_2+.jpg",
         "category": "法國麵包"
     },
@@ -391,6 +381,18 @@
     },
     {
         "src": "法國麵包/110+.jpg",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/112+.jpg",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/113+.jpg",
+        "category": "法國麵包"
+    },
+    {
+        "src": "法國麵包/114+.jpg",
         "category": "法國麵包"
     },
     {
@@ -482,11 +484,19 @@
         "category": "精緻頭像"
     },
     {
+        "src": "精緻頭像/567.png",
+        "category": "精緻頭像"
+    },
+    {
         "src": "精緻頭像/91+.jpg",
         "category": "精緻頭像"
     },
     {
         "src": "精緻頭像/96+.jpg",
+        "category": "精緻頭像"
+    },
+    {
+        "src": "精緻頭像/tim.png",
         "category": "精緻頭像"
     },
     {
@@ -502,6 +512,10 @@
         "category": "胸像橫插"
     },
     {
+        "src": "胸像橫插/64+.png",
+        "category": "胸像橫插"
+    },
+    {
         "src": "胸像橫插/74+.jpg",
         "category": "胸像橫插"
     },
@@ -511,6 +525,14 @@
     },
     {
         "src": "胸像橫插/86+.jpg",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "胸像橫插/88+.jpg",
+        "category": "胸像橫插"
+    },
+    {
+        "src": "胸像橫插/90+.jpg",
         "category": "胸像橫插"
     },
     {
@@ -574,6 +596,10 @@
         "category": "鬆餅"
     },
     {
+        "src": "鬆餅/11.png",
+        "category": "鬆餅"
+    },
+    {
         "src": "鬆餅/111+.jpg",
         "category": "鬆餅"
     },
@@ -602,10 +628,6 @@
         "category": "鬆餅"
     },
     {
-        "src": "麵包籃/115+.jpg",
-        "category": "麵包籃"
-    },
-    {
         "src": "麵包籃/101+.jpg",
         "category": "麵包籃"
     },
@@ -615,6 +637,10 @@
     },
     {
         "src": "麵包籃/109+.jpg",
+        "category": "麵包籃"
+    },
+    {
+        "src": "麵包籃/115+.jpg",
         "category": "麵包籃"
     },
     {
@@ -658,6 +684,38 @@
         "category": "麵包籃"
     },
     {
+        "src": "驚喜麵包/116+.jpg",
+        "category": "驚喜麵包"
+    },
+    {
+        "src": "驚喜麵包/sample1.png",
+        "category": "驚喜麵包"
+    },
+    {
+        "src": "驚喜麵包/格林+.jpg",
+        "category": "驚喜麵包"
+    },
+    {
+        "src": "驚喜麵包/潘朵+.jpg",
+        "category": "驚喜麵包"
+    },
+    {
+        "src": "驚喜麵包/米婭米可+.jpg",
+        "category": "驚喜麵包"
+    },
+    {
+        "src": "驚喜麵包/維絲珀+.jpg",
+        "category": "驚喜麵包"
+    },
+    {
+        "src": "驚喜麵包/諾艾爾.jpg",
+        "category": "驚喜麵包"
+    },
+    {
+        "src": "驚喜麵包/賽蕾娜+.jpg",
+        "category": "驚喜麵包"
+    },
+    {
         "src": "軟糖小人/1.mp4",
         "category": "軟糖小人"
     },
@@ -684,48 +742,45 @@
     {
         "src": "軟糖小人/7.mp4",
         "category": "軟糖小人"
-    },
-    {
-        "src": "驚喜麵包/116+.jpg",
-        "category": "驚喜麵包"
-    },
-    {
-        "src": "驚喜麵包/諾艾爾.jpg",
-        "category": "驚喜麵包"
-    },
-    {
-        "src": "驚喜麵包/米婭米可+.jpg",
-        "category": "驚喜麵包"
-    },
-    {
-        "src": "驚喜麵包/格林+.jpg",
-        "category": "驚喜麵包"
-    },
-    {
-        "src": "驚喜麵包/維絲珀+.jpg",
-        "category": "驚喜麵包"
-    },
-    {
-        "src": "驚喜麵包/潘朵+.jpg",
-        "category": "驚喜麵包"
-    },
-    {
-        "src": "驚喜麵包/賽蕾娜+.jpg",
-        "category": "驚喜麵包"
     }
 ];
 
-        const categoryToProduct = {
+        const categoryToProduct = (typeof window.categoryToProduct !== 'undefined') ? window.categoryToProduct : {
             '蝴蝶餅': 'pretzel',
             '法國麵包': 'baguette',
             '鬆餅': 'pancake',
             '麵包籃': 'basket',
             '精緻頭像': 'toast',
+            '正比頭像': 'toast',
             '胸像橫插': 'donut',
             '場景插畫': 'cake',
             '軟糖小人': 'gummy',
             '驚喜麵包': 'surprise'
         };
+
+        // 輔助函式：檢查分類是否開放中（聯動 products.js 中的 isOpen 狀態）
+        if (typeof isCategoryOpen !== 'function') {
+            window.isCategoryOpen = function(cat) {
+                const prodKey = categoryToProduct[cat];
+                if (!prodKey) return true;
+                const list = (typeof commissionProducts !== 'undefined') ? commissionProducts : (typeof products !== 'undefined' ? products : null);
+                if (list && list[prodKey]) {
+                    return list[prodKey].isOpen !== false;
+                }
+                return true;
+            };
+        }
+
+        if (typeof isProductOpen !== 'function') {
+            window.isProductOpen = function(prodKey) {
+                if (!prodKey) return false;
+                const list = (typeof commissionProducts !== 'undefined') ? commissionProducts : (typeof products !== 'undefined' ? products : null);
+                if (list && list[prodKey]) {
+                    return list[prodKey].isOpen !== false;
+                }
+                return true;
+            };
+        }
 
         // Mobile horizontal scroll and indicator logic
         function scrollNav(direction) {
@@ -791,14 +846,16 @@
         function renderGallery() {
             const nav = document.getElementById('gallery-nav');
             
-            // 依照您要求的順序進行從左到右排序
+            // 依照順序進行從左到右排序
             const customOrder = [
                 '蝴蝶餅', 
                 '法國麵包', 
                 '鬆餅', 
                 '麵包籃', 
-                '正比頭像', 
+                '精緻頭像', 
                 '胸像橫插', 
+                '場景插畫',
+                '軟糖小人',
                 '驚喜麵包'
             ];
             
@@ -808,10 +865,17 @@
                 if (!sortedCategories.includes(cat)) sortedCategories.push(cat);
             });
 
-            nav.innerHTML = sortedCategories.map(cat => {
-                const label = (cat === '驚喜麵包') ? '驚喜麵包' : cat;
-                return `<button class="neu-button" onclick="filterGallery(this, '${cat}')">${label}</button>`;
-            }).join('');
+            // 聯動 isOpen 狀態：若 isOpen 為 false 則將該委託展示分類隱藏，不讓訪客看見
+            const openCategories = sortedCategories.filter(cat => isCategoryOpen(cat));
+
+            if (openCategories.length === 0) {
+                nav.innerHTML = '<p style="color: var(--accent-brown); font-weight: bold; padding: 15px;">目前所有委託展示項目皆暫停開放中</p>';
+            } else {
+                nav.innerHTML = openCategories.map(cat => {
+                    const label = (cat === '驚喜麵包') ? '驚喜麵包' : cat;
+                    return `<button class="neu-button" onclick="filterGallery(this, '${cat}')">${label}</button>`;
+                }).join('');
+            }
 
             // Hide the grid contents and show the placeholder
             const grid = document.getElementById('gallery-grid');
@@ -819,6 +883,7 @@
             const placeholder = document.getElementById('gallery-placeholder');
             if (placeholder) {
                 placeholder.style.display = 'block';
+                placeholder.textContent = (openCategories.length === 0) ? '目前無開放中的展示項目' : '請選擇項目開啟例圖';
             }
             // Hide the shortcut container
             const shortcutContainer = document.getElementById('order-shortcut-container');
@@ -829,22 +894,13 @@
             setTimeout(updateNavScrollState, 50);
         }
 
-            // Hide the grid contents and show the placeholder
-            const grid = document.getElementById('gallery-grid');
-            grid.innerHTML = '';
-            const placeholder = document.getElementById('gallery-placeholder');
-            if (placeholder) {
-                placeholder.style.display = 'block';
-            }
-            // Hide the shortcut container
-            const shortcutContainer = document.getElementById('order-shortcut-container');
-            if (shortcutContainer) {
-                shortcutContainer.style.display = 'none';
-            }
-
-            setTimeout(updateNavScrollState, 50);
-
         function filterGallery(btn, category) {
+            // 安全防護：檢查該委託項目是否開放，若已關閉則不予展示
+            if (!isCategoryOpen(category)) {
+                alert('抱歉，此項目目前暫停接單，暫不提供例圖展示。');
+                return;
+            }
+
             // Remove 'selected' class from all buttons
             const buttons = document.querySelectorAll('#gallery-nav .neu-button');
             buttons.forEach(b => b.classList.remove('selected'));
@@ -870,12 +926,12 @@
                 placeholder.style.display = 'none';
             }
 
-            // Show shortcut button if there is a corresponding product
+            // Show shortcut button only if there is a corresponding product AND it is open
             const shortcutContainer = document.getElementById('order-shortcut-container');
             const shortcutBtn = document.getElementById('order-shortcut-btn');
             if (shortcutContainer && shortcutBtn) {
                 const prodKey = categoryToProduct[category];
-                if (prodKey) {
+                if (prodKey && isProductOpen(prodKey)) {
                     shortcutBtn.href = `index.html?order=${prodKey}`;
                     const label = (category === '驚喜麵包') ? '🍞 驚喜麵包' : category;
                     shortcutBtn.innerHTML = `👉 立即前往下訂「${label}」系列 🛒`;
@@ -886,7 +942,13 @@
             }
 
             const grid = document.getElementById('gallery-grid');
-            const filtered = galleryItems.filter(item => item.category === category);
+            // Filter: must match category AND must be open
+            const filtered = galleryItems.filter(item => item.category === category && isCategoryOpen(item.category));
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--accent-brown); padding: 30px;">此分類目前無展示圖片或暫停開放。</p>';
+                return;
+            }
 
             grid.innerHTML = filtered.map(item => {
                 const isVideo = item.src.endsWith('.mp4');

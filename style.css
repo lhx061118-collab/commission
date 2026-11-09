@@ -980,3 +980,28 @@ footer {
     box-shadow: 15px 15px 30px var(--dark-shadow),
         -15px -15px 30px var(--light-shadow);
 }
+
+/* 委託品項開放開關與狀態輔助樣式 */
+.menu-empty-notice {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px 20px;
+    color: var(--accent-brown);
+}
+
+.menu-card.is-closed {
+    opacity: 0.55;
+    filter: grayscale(0.7);
+    cursor: not-allowed;
+}
+
+.closed-badge {
+    display: inline-block;
+    background-color: #D98B8B;
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 12px;
+    margin-top: 8px;
+}

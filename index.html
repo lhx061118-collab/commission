@@ -9,6 +9,8 @@
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=M+PLUS+Rounded+1c:wght@400;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- 引入委託品項資料庫與開放狀態開關 (修改品項 isOpen 請至 products.js) -->
+    <script src="products.js"></script>
 </head>
 
 <body>
@@ -63,13 +65,13 @@
                     <span>📢</span> 店長公告欄
                 </div>
                 <p style="font-size: 0.88rem; color: #5c3e2b; margin: 0; line-height: 1.5;">
-                    ✨ <strong>預告通知：</strong> 預計於 11/10 起部分品項將進行價格微調，欲以現行價格預約請提前私訊排單喔！<br>
+                    ✨ <strong>價目調整通知：</strong> 各品項基礎價格與人數加價規則已更新完畢，歡迎參考最新價目！<br>
                     🎉 <strong>特殊活動：</strong> 目前驚喜麵包開放中，歡迎挑選預定！
                 </p>
             </div>
 
             <p style="font-size: 0.8rem; opacity: 0.6; margin-top: 10px; margin-bottom: 20px;">
-                最後更新：2026 / 10 / 26
+                最後更新：2026 / 11 / 09
             </p>
 
             <a href="https://www.facebook.com/share/1E2dvRGXvg/" target="_blank" class="status-btn" id="statusBtn">
@@ -81,70 +83,8 @@
 
     <section id="menu">
         <h2 class="section-title">今日菜單 / Menu</h2>
-        <div class="grid">
-            <div class="neu-card menu-card" onclick="openModal('pretzel')">
-                <span class="menu-icon">🥨</span>
-                <h3>蝴蝶餅 &nbsp;(抽象頭像)</h3>
-                <p>抽象的小插畫，總之就是很抽象!適合當小頭像。</p>
-                <div class="price">NT$ 80 / 人</div>
-            </div>
-
-            <div class="neu-card menu-card" onclick="openModal('baguette')">
-                <span class="menu-icon">🥖</span>
-                <h3>法國麵包 &nbsp;(短腿Q版)</h3>
-                <p>短腿Q版小人，外酥內軟，給你最可愛的呈現。</p>
-                <div class="price">NT$ 200 / 人</div>
-            </div>
-
-            <div class="neu-card menu-card" onclick="openModal('pancake')">
-                <span class="menu-icon">🥞</span>
-                <h3>鬆餅 &nbsp;(長腿Q版)</h3>
-                <p>長腿Q版小人，適合互動感滿滿滿滿的互動搭配。</p>
-                <div class="price">NT$ 300 起</div>
-            </div>
-
-            <div class="neu-card menu-card" onclick="openModal('basket')">
-                <span class="menu-icon">🧺</span>
-                <h3>麵包籃 &nbsp;(Q版插畫)</h3>
-                <p>多人互動或是Q版場景插圖，綜合麵包籃，滿足你所有的想像！</p>
-                <div class="price">NT$ 400 起</div>
-            </div>
-
-            <div class="neu-card menu-card" onclick="openModal('toast')">
-                <span class="menu-icon">🍞</span>
-                <h3>吐司 &nbsp;(正比頭像)</h3>
-                <p>正比例精緻頭像，為您展現角色的獨特風格與魅力。</p>
-                <div class="price">NT$ 600 起</div>
-            </div>
-
-            <div class="neu-card menu-card" onclick="openModal('donut')">
-                <span class="menu-icon">🍩</span>
-                <h3>甜甜圈 &nbsp;(胸像橫插)</h3>
-                <p>氛圍胸像橫插，加上些許氛圍背景，讓人忍不住想咬一口。</p>
-                <div class="price">NT$ 750 起</div>
-            </div>
-
-            <div class="neu-card menu-card" onclick="openModal('cake')">
-                <span class="menu-icon">🍰</span>
-                <h3>蛋糕 &nbsp;(氛圍插畫)</h3>
-                <p>極具氛圍感的大插畫，提供最豪華精緻的下午茶視覺饗宴。</p>
-                <div class="price">NT$ 1000 起</div>
-            </div>
-
-            <div class="neu-card menu-card" onclick="openModal('gummy')">
-                <span class="menu-icon">🍬</span>
-                <h3>軟糖 &nbsp;(Q版桌寵小人)</h3>
-                <p>可以放在桌面上搖頭晃腦陪伴你的可愛軟糖小生物。</p>
-                <div class="price">NT$ 500 起</div>
-            </div>
-
-            <div class="neu-card menu-card" onclick="openModal('surprise')">
-                <span class="menu-icon">🍞</span>
-                <h3>驚喜麵包 &nbsp;(草插驚喜包)</h3>
-                <p>構圖隨機（大頭/半身/全身），無草稿確認流程，可許願!</p>
-                <div class="price">NT$ 500 / 角色</div>
-                <div class="deposit-tag">固定收取 NT$ 200 訂金（取消不退）</div>
-            </div>
+        <div class="grid" id="menuGrid">
+            <!-- 委託品項由前端 JavaScript 動態渲染（依據 isOpen 開放狀態開關過濾） -->
         </div>
     </section>
 
@@ -307,7 +247,7 @@
                 </p>
                 <p>
                     所有價格均為底價，<br>
-                    會依複雜度加價。
+                    會依複雜度最多增加500。
                 </p>
                 <h3>📌 修改規則</h3>
                 <p>
@@ -414,28 +354,175 @@
 
     <script>
         // Paomo Bakery Logic
-        const products = {
-            pretzel: { name: '蝴蝶餅 (抽象頭像)', basePrice: 80 },
-            baguette: { name: '法國麵包 (短腿Q版)', basePrice: 200 },
-            pancake: { name: '鬆餅 (長腿Q版)', basePrice: 300 },
-            basket: { name: '麵包籃 (Q版插畫)', basePrice: 400 },
-            toast: { name: '吐司 (正比頭像)', basePrice: 600 },
-            donut: { name: '甜甜圈 (胸像橫插)', basePrice: 750 },
-            cake: { name: '蛋糕 (氛圍插畫)', basePrice: 1000 },
-            gummy: { name: '軟糖 (Q版桌寵小人)', basePrice: 500 },
-            surprise: {
-                name: '🍞 驚喜麵包 (Color Sketch Surprise)',
+        // 委託品項設定（優先讀取 products.js 中的設定，並包含 isOpen 開放狀態開關）
+        const products = (typeof commissionProducts !== 'undefined') ? commissionProducts : {
+            pretzel: {
+                id: 'pretzel',
+                name: '蝴蝶餅 (抽象頭像)',
+                title: '蝴蝶餅 &nbsp;(抽象頭像)',
+                category: '蝴蝶餅',
+                icon: '🥨',
+                desc: '抽象的小插畫，總之就是很抽象!適合當小頭像。',
+                descShort: '抽象的小插畫，總之就是很抽象!適合當小頭像。',
+                priceDisplay: 'NT$ 80 / 人',
+                basePrice: 80,
+                isOpen: true // 開放狀態開關 (true: 開放中 / false: 暫停接單)
+            },
+            baguette: {
+                id: 'baguette',
+                name: '法國麵包 (短腿Q版)',
+                title: '法國麵包 &nbsp;(短腿Q版)',
+                category: '法國麵包',
+                icon: '🥖',
+                desc: '短腿Q版小人，外酥內軟，給你最可愛的呈現。',
+                descShort: '短腿Q版小人，外酥內軟，給你最可愛的呈現。',
+                priceDisplay: 'NT$ 300 / 人',
+                basePrice: 300,
+                isOpen: true
+            },
+            pancake: {
+                id: 'pancake',
+                name: '鬆餅 (長腿Q版)',
+                title: '鬆餅 &nbsp;(長腿Q版)',
+                category: '鬆餅',
+                icon: '🥞',
+                desc: '長腿Q版小人，適合互動感滿滿滿滿的互動搭配。',
+                descShort: '長腿Q版小人，適合互動感滿滿滿滿的互動搭配。',
+                priceDisplay: 'NT$ 400 起',
+                basePrice: 400,
+                isOpen: true
+            },
+            basket: {
+                id: 'basket',
+                name: '麵包籃 (Q版插畫)',
+                title: '麵包籃 &nbsp;(Q版插畫)',
+                category: '麵包籃',
+                icon: '🧺',
+                desc: '多人互動或是Q版場景插圖，綜合麵包籃，滿足你所有的想像！',
+                descShort: '多人互動或是Q版場景插圖，綜合麵包籃，滿足你所有的想像！',
+                priceDisplay: 'NT$ 500 起',
                 basePrice: 500,
-                desc: '色彩速寫驚喜包！單價 NT$500／角色，兩位 NT$1,000，三位 NT$1,500。構圖隨機（大頭/半身/全身），色彩氛圍由繪師自由發揮。無草稿確認流程，每筆固定收取 NT$200 訂金（中途取消不退）。'
+                isOpen: true
+            },
+            toast: {
+                id: 'toast',
+                name: '吐司 (正比頭像)',
+                title: '吐司 &nbsp;(正比頭像)',
+                category: '精緻頭像',
+                icon: '🍞',
+                desc: '正比例精緻頭像，為您展現角色的獨特風格與魅力。',
+                descShort: '正比例精緻頭像，為您展現角色的獨特風格與魅力。',
+                priceDisplay: 'NT$ 800 起',
+                basePrice: 800,
+                isOpen: true
+            },
+            donut: {
+                id: 'donut',
+                name: '甜甜圈 (胸像橫插)',
+                title: '甜甜圈 &nbsp;(胸像橫插)',
+                category: '胸像橫插',
+                icon: '🍩',
+                desc: '氛圍胸像橫插，加上些許氛圍背景，讓人忍不住想咬一口。',
+                descShort: '氛圍胸像橫插，加上些許氛圍背景，讓人忍不住想咬一口。',
+                priceDisplay: 'NT$ 1000 起',
+                basePrice: 1000,
+                isOpen: true
+            },
+            cake: {
+                id: 'cake',
+                name: '蛋糕 (氛圍插畫)',
+                title: '蛋糕 &nbsp;(氛圍插畫)',
+                category: '場景插畫',
+                icon: '🍰',
+                desc: '極具氛圍感的大插畫，提供最豪華精緻的下午茶視覺饗宴。',
+                descShort: '極具氛圍感的大插畫，提供最豪華精緻的下午茶視覺饗宴。',
+                priceDisplay: 'NT$ 1200 起',
+                basePrice: 1200,
+                isOpen: true
+            },
+            gummy: {
+                id: 'gummy',
+                name: '軟糖 (Q版桌寵小人)',
+                title: '軟糖 &nbsp;(Q版桌寵小人)',
+                category: '軟糖小人',
+                icon: '🍬',
+                desc: '可以放在桌面上搖頭晃腦陪伴你的可愛軟糖小生物。',
+                descShort: '可以放在桌面上搖頭晃腦陪伴你的可愛軟糖小生物。',
+                priceDisplay: 'NT$ 500 起',
+                basePrice: 500,
+                isOpen: true
+            },
+            surprise: {
+                id: 'surprise',
+                name: '🍞 驚喜麵包 (Color Sketch Surprise)',
+                title: '驚喜麵包 &nbsp;(草插驚喜包)',
+                category: '驚喜麵包',
+                icon: '🍞',
+                desc: '色彩速寫驚喜包！單價 NT$500／角色，兩位 NT$1,000，三位 NT$1,500。構圖隨機（大頭/半身/全身），色彩氛圍由繪師自由發揮。無草稿確認流程，每筆固定收取 NT$200 訂金（中途取消不退）。',
+                descShort: '構圖隨機（大頭/半身/全身），無草稿確認流程，可許願!',
+                priceDisplay: 'NT$ 500 / 角色',
+                tag: '固定收取 NT$ 200 訂金（取消不退）',
+                basePrice: 500,
+                isOpen: true
             }
         };
 
         let currentProduct = null;
         let cart = [];
 
+        // 渲染菜單品項（聯動 isOpen 開關：若 isOpen 為 false 則隱藏不渲染）
+        function renderMenu() {
+            const menuGrid = document.getElementById('menuGrid') || document.querySelector('#menu .grid');
+            if (!menuGrid) return;
+
+            menuGrid.innerHTML = '';
+            let visibleCount = 0;
+
+            Object.keys(products).forEach(key => {
+                const item = products[key];
+                // 檢查該項目的 isOpen 狀態，若為 false 則隱藏（不顯示在頁面上），但資料物件仍保留於 products 中
+                if (item.isOpen === false) {
+                    return;
+                }
+
+                visibleCount++;
+                const card = document.createElement('div');
+                card.className = 'neu-card menu-card';
+                card.setAttribute('onclick', `openModal('${key}')`);
+
+                const tagHtml = item.tag ? `<div class="deposit-tag">${item.tag}</div>` : '';
+                const descText = item.descShort || item.desc || '';
+                const icon = item.icon || '🍞';
+                const title = item.title || item.name;
+                const price = item.priceDisplay || ('NT$ ' + item.basePrice);
+
+                card.innerHTML = `
+                    <span class="menu-icon">${icon}</span>
+                    <h3>${title}</h3>
+                    <p>${descText}</p>
+                    <div class="price">${price}</div>
+                    ${tagHtml}
+                `;
+                menuGrid.appendChild(card);
+            });
+
+            if (visibleCount === 0) {
+                menuGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--accent-brown);">
+                        <p style="font-size: 1.3rem; font-weight: bold; margin-bottom: 10px;">🍞 目前所有品項皆暫停接單中</p>
+                        <p style="font-size: 0.95rem; opacity: 0.8;">店長正在全力烘焙中，歡迎隨時關注公告！</p>
+                    </div>
+                `;
+            }
+        }
+
         function openModal(productId) {
-            currentProduct = productId;
             const p = products[productId];
+            if (!p || p.isOpen === false) {
+                alert('抱歉，此項目目前暫停接單！');
+                return;
+            }
+            currentProduct = productId;
             document.getElementById('modalTitle').innerText = p.name;
             document.getElementById('modalDesc').innerText = p.desc || '';
             document.getElementById('portionCount').value = 1;
@@ -474,12 +561,12 @@
             let basePricePerPortion = 0;
             switch (currentProduct) {
                 case 'pretzel': basePricePerPortion = 80 * people; break;
-                case 'baguette': basePricePerPortion = 200 * people; break;
-                case 'pancake': basePricePerPortion = 300 + (people > 1 ? (people - 1) * 200 : 0); break;
-                case 'basket': basePricePerPortion = 400 + (people > 1 ? (people - 1) * 200 : 0); break;
-                case 'toast': basePricePerPortion = 600 + (people - 1) * 300; break;
-                case 'donut': basePricePerPortion = 750 + (people - 1) * 375; break;
-                case 'cake': basePricePerPortion = 1000 + (people - 1) * 500; break;
+                case 'baguette': basePricePerPortion = 300 * people; break;
+                case 'pancake': basePricePerPortion = 400 + (people > 1 ? (people - 1) * 300 : 0); break;
+                case 'basket': basePricePerPortion = 500 + (people > 1 ? (people - 1) * 400 : 0); break;
+                case 'toast': basePricePerPortion = 800 + (people > 1 ? (people - 1) * 600 : 0); break;
+                case 'donut': basePricePerPortion = 1000 + (people > 1 ? (people - 1) * 800 : 0); break;
+                case 'cake': basePricePerPortion = 1200 + (people > 1 ? (people - 1) * 1000 : 0); break;
                 case 'surprise':
                     basePricePerPortion = 500 * people;
                     break;
@@ -522,6 +609,10 @@
 
         function addToCart() {
             const p = products[currentProduct];
+            if (!p || p.isOpen === false) {
+                alert('抱歉，此項目目前暫停接單！');
+                return;
+            }
             const portions = parseInt(document.getElementById('portionCount').value) || 1;
             const people = parseInt(document.getElementById('peopleCount').value) || 1;
             const price = calculatePrice();
@@ -733,6 +824,8 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            renderMenu();
+
             const commissionOpen = true;
             const statusCard = document.getElementById("statusCard");
             const statusText = document.getElementById("statusText");
@@ -751,7 +844,7 @@
 
             const urlParams = new URLSearchParams(window.location.search);
             const orderProduct = urlParams.get('order');
-            if (orderProduct && products[orderProduct]) {
+            if (orderProduct && products[orderProduct] && products[orderProduct].isOpen !== false) {
                 const menuSec = document.getElementById('menu');
                 if (menuSec) {
                     menuSec.scrollIntoView({ behavior: 'smooth' });
