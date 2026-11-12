@@ -112,7 +112,7 @@
             descShort: '可以放在桌面上搖頭晃腦陪伴你的可愛軟糖小生物。',
             priceDisplay: 'NT$ 500 起',
             basePrice: 500,
-            isOpen: true // 開放狀態開關
+            isOpen: false // 開放狀態開關
         },
         surprise: {
             id: 'surprise',
